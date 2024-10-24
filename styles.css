@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: top;
+    height: 500vh;
+    margin: 0;
+   
+}
+
+.container {
+    width: 80%;
+    max-width: 2000px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}
+
+.attributes {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: top;
+    position: fixed;
+    width: 80%;
+    background-color: rgb(191, 182, 182);
+    border-radius: 20px;
+    padding: 10px 10px 10px 3px;
+   
+}
+
+.attribute {
+    display: flex;
+    align-items: center;   
+}
+
+.symbol {
+    font-size: 24px;
+    margin-right: 10px;
+    width: 24px; /* Define uma largura fixa para garantir alinhamento */
+    text-align: center; /* Centraliza o texto */
+    
+}
+
+.value {
+    font-size: 20px;
+    margin: 0 10px;
+    
+}
+
+/* Aplicando cor vermelha para os símbolos ♥ e ♦ */
+.symbol-heart,
+.symbol-diamond {
+    color: red;
+}
+
+button {
+    
+    padding: 1px 4px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    width: 20px; /* Define a largura fixa do botão */
+    height: 20px;
+    
+}
+#attributes-left {
+    border-right: 10px solid #ccc; /* Adiciona uma borda direita */
+    width: 50%; /* Espaçamento à direita para separação */
+    position: relative;
+    
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.skills {
+    border-top: 2px solid #ccc;
+    padding-top: 10px;
+    margin-top: 284px;
+    
+}
+
+
+h1 {
+    margin-top: 0;
+    
+}
+.symbol {
+    font-size: 40px; /* Tamanho desejado para o caractere especial ♣ */
+}
+.aumenta-letra {
+    font-weight: bold;
+    font-size: 32px;
+}
+#togglePositionButton {
+    position: absolute;
+    top: 10px; /* Posição vertical desejada */
+    right: calc(0% + 5px); /* Posiciona o botão à direita do elemento #attributes-left */
+    z-index: 9999; /* Garante que o botão esteja acima dos outros elementos */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+#togglePositionButton:hover {
+    background-color: #0056b3;
+}

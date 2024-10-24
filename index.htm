@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Ficha</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="attributes">
+            <div id="attributes-left">
+                <button id="togglePositionButton" onclick="toggleAttributesPosition()">Trava Intercade</button>
+                <h1>Altas</h1>
+                <div class="attribute">
+                  
+                    <span class="symbol symbol-club">♣</span>
+                    <button onclick="adjustAttribute('attr1', -1)">-</button>
+                    <span id="attr1" class="value">0</span>
+                    <button onclick="adjustAttribute('attr1', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-heart">♥</span>
+                    <button onclick="adjustAttribute('attr2', -1)">-</button>
+                    <span id="attr2" class="value">0</span>
+                    <button onclick="adjustAttribute('attr2', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-spade">♠</span>
+                    <button onclick="adjustAttribute('attr3', -1)">-</button>
+                    <span id="attr3" class="value">0</span>
+                    <button onclick="adjustAttribute('attr3', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-diamond">♦</span>
+                    <button onclick="adjustAttribute('attr4', -1)">-</button>
+                    <span id="attr4" class="value">0</span>
+                    <button onclick="adjustAttribute('attr4', 1)">+</button>
+                </div>
+            </div>
+            <div id="attributes-right">
+                <h1>Baixas</h1>
+                <div class="attribute">
+                    <span class="symbol symbol-club">♣</span>
+                    <button onclick="adjustAttribute('attr5', -1)">-</button>
+                    <span id="attr5" class="value">0</span>
+                    <button onclick="adjustAttribute('attr5', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-heart">♥</span>
+                    <button onclick="adjustAttribute('attr6', -1)">-</button>
+                    <span id="attr6" class="value">0</span>
+                    <button onclick="adjustAttribute('attr6', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-spade">♠</span>
+                    <button onclick="adjustAttribute('attr7', -1)">-</button>
+                    <span id="attr7" class="value">0</span>
+                    <button onclick="adjustAttribute('attr7', 1)">+</button>
+                </div>
+                <div class="attribute">
+                    <span class="symbol symbol-diamond">♦</span>
+                    <button onclick="adjustAttribute('attr8', -1)">-</button>
+                    <span id="attr8" class="value">0</span>
+                    <button onclick="adjustAttribute('attr8', 1)">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="skills">
+            <h1>Perícias</h1>
+            <div id="skills-list">
+                <!-- Skills serão adicionadas dinamicamente aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
