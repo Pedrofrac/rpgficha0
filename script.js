@@ -345,13 +345,44 @@ function updateSkills() {
 
     skillText += ` <hr><br><br>`;
 
+    convencerValue = (attributes.attr4 * attributes.attr2 >=4 ? attributes.attr4 * attributes.attr2:attributes.attr4 );
+    
+    skillText += `<span class="aumenta-letra">Convencer= ${(convencerValue)}</span><br>`;
+    
+    skillText += '<br>';
 
 
+    if ((attributes.attr2 > 1 && attributes.attr4 > 1)) {
 
 
+        skillText += `
+                        Convencer: +${Math.floor((convencerValue) / 3)}`
+    }
+    else {
+        skillText += '<br>';
+    }
 
 
+    skillText += ` <hr><br><br>`;
 
+    ocultarValue = (attributes.attr2);
+    
+    skillText += `<span class="aumenta-letra">Ocultar= ${(convencerValue)}</span><br>`;
+    
+    skillText += '<br>';
+
+
+    if (attributes.attr2 > 1 ) {
+
+
+        skillText += `
+                        Ocultar: +${(ocultarValue)}`
+    }
+    else {
+        skillText += '<br>';
+    }
+    
+    skillText += ` <hr><br><br>`;
 
     const skillsList = document.getElementById('skills-list');
     skillsList.innerHTML = skillText.trim(); // Usando innerHTML para interpretar quebras de linha como HTML
