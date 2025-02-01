@@ -134,6 +134,10 @@ function updateSkills() {
         }
 
     }
+
+    percepcaoValue =  (attributes.attr4 >=3 ?((attributes.attr4-1) *2+1):attributes.attr4 );
+    sensiValue =   (attributes.attr1 >=3 ?((attributes.attr1-1) *2 +1):attributes.attr1 );
+    
     skillText += ` <hr><br><br>`;
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3
 
@@ -142,8 +146,8 @@ function updateSkills() {
     if (attributes.attr1 != 1 && attributes.attr4 != 1) {
 
         skillText += ` <br><br>
-                         Percepção: +${attributes.attr4 + 5}<br>
-                         Sensibilidade Corporal: +${attributes.attr1 + 3}<br>
+                         Percepção: +${percepcaoValue + 4}<br>
+                         Sensibilidade Corporal: +${sensiValue + 1}<br>
                         <br>
                         `;
 
@@ -365,9 +369,9 @@ function updateSkills() {
 
     skillText += ` <hr><br><br>`;
 
-    ocultarValue = (attributes.attr2);
+    ocultarValue = (attributes.attr2 >=3 ?((attributes.attr2) *3 -2):attributes.attr2 );
     
-    skillText += `<span class="aumenta-letra">Ocultar= ${(convencerValue)}</span><br>`;
+    skillText += `<span class="aumenta-letra">Ocultar= ${(ocultarValue)}</span><br>`;
     
     skillText += '<br>';
 
