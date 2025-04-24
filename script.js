@@ -241,10 +241,6 @@ function updateSkills() {
     `);
     }
 
-    if ((attributes.attr2 > 1  && attributes.attr5 > 1 )) {
-        skillTextParts.push(`Amor: +${attributes.attr5} <br>
-    `);
-    }
     if ((attributes.attr2 > 1 )) {
         skillTextParts.push(`Ocultar: +${ocultarValue} <br>
     `);
