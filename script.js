@@ -270,10 +270,10 @@ function updateSkills() {
 
         let skillTextParts2 = [];
     
-        skillTextParts2.push(`Dano impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
-        skillTextParts2.push(`Dano tóxico: ${(attributes.attr3*3)+ 3} <br>`);
+        skillTextParts2.push(`Dano Impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
+        skillTextParts2.push(`Dano Tóxico: ${(attributes.attr3*3)+ 3} <br>`);
         skillTextParts2.push(`Dano Cortante: ${(attributes.attr3*4)+ 3} <br>`);
-        skillTextParts2.push(`Dano Corrosivo ${(attributes.attr3*2)+ 3} <br>`);
+        skillTextParts2.push(`Dano Corrosivo: ${(attributes.attr3*2)+ 3} <br>`);
     
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
