@@ -74,8 +74,8 @@ function updateSkills() {
     atletismoValue = ((attributes.attr3 * attributes.attr7) >= 4 ? attributes.attr3 * attributes.attr7 : 0);
     velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2
     protegerValue = (attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr1);
-    controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 > attributes.attr3 ? attributes.attr2 : attributes.attr3)
-    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 4 ? attributes.attr4 * attributes.attr8 : attributes.attr4);
+    controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1  : attributes.attr3 != 0 ? attributes.attr3 : 1 )
+    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 4 ? attributes.attr4 * attributes.attr8 : attributes.attr4 != 0 ? attributes.attr4 : 1 );
     convencerValue = (attributes.attr4 * attributes.attr2 >= 4 ? attributes.attr4 * attributes.attr2 : attributes.attr4);
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 3 - 2) : attributes.attr2 +2);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
@@ -190,7 +190,7 @@ function updateSkills() {
     `);
     }
 
-    if ((attributes.attr3 > 1 || attributes.attr2 > 1) && attributes.attr3 != 1 && attributes.attr2 != 1) {
+    if ( attributes.attr3 != 1 && attributes.attr2 != 1) {
         skillTextParts.push(`Costume: ${Math.round((conta(controleValue, numeros) * 100))} | ${(conta(controleValue, numeros) * 10)}  <br>
     `);
     }
@@ -200,8 +200,8 @@ function updateSkills() {
     `);
     }
 
-    if ((attributes.attr4 > 1 && attributes.attr8 > 1)) {
-        skillTextParts.push(`Informação: ${Math.round((conta(conhecimentoValue, numeros) * 100 * attributes.attr8))} | ${(conta(conhecimentoValue, numeros) * 10 * attributes.attr8)} Limite: ${(attributes.attr8)} <br>
+    if (true) {
+        skillTextParts.push(`Informações: ${Math.round((conta(conhecimentoValue, numeros) * 100 * (attributes.attr8 != 0 ? attributes.attr8 : 1 )))} | ${(conta(conhecimentoValue, numeros) * 10 * (attributes.attr8 != 0 ? attributes.attr8 : 1) )} Limite: ${(attributes.attr8 != 0 ? attributes.attr8 : 1 )} <br>
     `);
     }
 
