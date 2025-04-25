@@ -10,6 +10,7 @@ let attributes = {
     attr8: 0,
 };
 
+
 // Função para ajustar atributos
 function adjustAttribute(attributeId, change) {
     attributes[attributeId] += change;
@@ -32,6 +33,7 @@ function toggleAttributesPosition() {
         attributesContainer.classList.add('attributes-fixed');
         // Altera a margin-top para 3px
         skillsContainer.style.marginTop = '284px';
+       
     } else {
 
         // Se a posição atual for fixed, muda para static
@@ -40,6 +42,7 @@ function toggleAttributesPosition() {
         attributesContainer.classList.remove('attributes-fixed');
         // Altera a margin-top para 330px
         skillsContainer.style.marginTop = '0px';
+
     }
 }
 
@@ -74,7 +77,7 @@ function updateSkills() {
     sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >=1 ? attributes.attr1 :0;
     forcaValue = attributes.attr3 > attributes.attr7 ? attributes.attr3 : attributes.attr7;
     percepcaoValue = (attributes.attr4 >= 3 ? ((attributes.attr4 - 1) * 2 + 1) : attributes.attr4 == 1 ? - 2 : attributes.attr4);
-    sensiValue = (attributes.attr1 >= 3 ? ((attributes.attr1) * 3 - 2) : attributes.attr1 == 1 ? 0 : attributes.attr1 + 1);
+    sensiValue = (attributes.attr1 >= 3 ? ((attributes.attr1) * 3 - 3) : attributes.attr1 == 1 ? 0 : attributes.attr1 + 1);
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3;
     atletismoValue = ((attributes.attr3 * attributes.attr7) >= 1 ? attributes.attr3 * attributes.attr7 : 0);
     velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2
@@ -100,7 +103,7 @@ function updateSkills() {
 
 
 
-    let skillTextParts = [];  // Array para armazenar as partes de skillText
+    let skillTextParts = ["<b>"];  // Array para armazenar as partes de skillText
 
     if (attributes.attr3 * attributes.attr1 >= 1) {
         
@@ -134,7 +137,7 @@ function updateSkills() {
     }
 
     if (true) {
-        skillTextParts.push(`Pontos para Habilidades: +${attributes.attr7 + 1}<br>
+        skillTextParts.push(`Pontos de Habilidades: +${attributes.attr7 + 1}<br>
     `);
     }
 
@@ -175,7 +178,7 @@ function updateSkills() {
     }
     if (attributes.attr5 >= 1) {
         for (let i = attributes.attr5 + 1; i > 1; i--) {
-            skillTextParts.push(`Salvar: ${`+${(-i + attributes.attr5 + 2)} ( ${(-i + attributes.attr5 + 3) * 5} EDPt) (${(-i + attributes.attr5 + 3) * 8} EDPm)`}<br>`);
+            skillTextParts.push(`Salvar: ${`+${(-i + attributes.attr5 + 2)} (-${(-i + attributes.attr5 + 3) * 5} Saúde) (-${(-i + attributes.attr5 + 3) * 8} Conforto)`}<br>`);
         }
 
     }
@@ -248,13 +251,47 @@ function updateSkills() {
 
     // Ordenar o array skillTextParts de forma alfabética
     skillTextParts.sort();
+    skillTextParts.push(`</b>`);
     skillText = skillTextParts.join("");
+    
+
+    
+
+
+
+
 
 
     // Combinar as partes ordenadas em uma string final
+    const attributesContainer = document.querySelector('.attributes');
+    
+    if (attributesContainer.style.position === 'static'){
+        skillText += `<hr>`;
+
+        let skillTextParts2 = [];
+    
+        skillTextParts2.push(`Dano impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
+        skillTextParts2.push(`Dano tóxico: ${(attributes.attr3*3)+ 3} <br>`);
+        skillTextParts2.push(`Dano Cortante: ${(attributes.attr3*4)+ 3} <br>`);
+        skillTextParts2.push(`Dano Corrosivo ${(attributes.attr3*2)+ 3} <br>`);
+    
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+
+    }
+    
 
 
+   
     skillText += ` <hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>`;
+
+    
+
+
+
+
+
+
 
     const skillsList = document.getElementById('skills-list');
 
