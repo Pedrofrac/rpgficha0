@@ -67,16 +67,10 @@ function updateSkills() {
     ];
     // Verifica a condição de Defesa e adiciona à skillText se a condição for atendida
     defenseValue = attributes.attr3 >= 3 ? attributes.attr3 + 2 : attributes.attr3;
-
     defensedefortitudeValue = attributes.attr1 >= 3 ? attributes.attr1+ 2 : attributes.attr1;
-
-
-
-    fortitudeValue = attributes.attr1 >= 3 ? ((( attributes.attr1)) * 2) : +1+((-1+attributes.attr1)*2) ;
-
-
-    resistValue = attributes.attr1 * attributes.attr3 >= 4 ? attributes.attr1 * attributes.attr3 : attributes.attr1 > attributes.attr3 ? attributes.attr1 : attributes.attr3
-    vontadeValue = attributes.attr1 > attributes.attr2 ? (attributes.attr1 * attributes.attr2) + attributes.attr2 : (attributes.attr1 * attributes.attr2) + attributes.attr1;
+    fortitudeValue = attributes.attr1 >= 3 ? ((( attributes.attr1-1)) *3) : +1+((-1+attributes.attr1)*2) ;
+    // espada e paus
+    vontadeValue = attributes.attr1 > 1 && attributes.attr2 > 1 ? (attributes.attr1 * attributes.attr2) + 3 : (attributes.attr1 + attributes.attr2);
     sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >=1 ? attributes.attr1 :0;
     forcaValue = attributes.attr3 > attributes.attr7 ? attributes.attr3 : attributes.attr7;
     percepcaoValue = (attributes.attr4 >= 3 ? ((attributes.attr4 - 1) * 2 + 1) : attributes.attr4 == 1 ? - 2 : attributes.attr4);
@@ -86,11 +80,20 @@ function updateSkills() {
     velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2
     protegerValue = (attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr1);
     controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1)
-    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : attributes.attr4 != 0 ? attributes.attr4 : 1);
-    convencerValue = (attributes.attr4 * attributes.attr2 >= 4 ? attributes.attr4 * attributes.attr2 : attributes.attr4);
+    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1 );
+    
+  
+    convencerValue = (attributes.attr4 > 1 && attributes.attr2 > 1? attributes.attr4 > attributes.attr2? 1 +(attributes.attr2 *2) : attributes.attr4 == attributes.attr2? attributes.attr2 *2: 1+ (attributes.attr4 *2) : attributes.attr4 == attributes.attr2? 1 : 2);
+    
+    if (attributes.attr4 == 2 && attributes.attr2 == 2){
+        convencerValue = 3;
+
+    }
+        
+    
+    
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 3 - 2) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 2);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
-
 
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
@@ -114,7 +117,7 @@ function updateSkills() {
 
 
     if (vontadeValue >= 1 && attributes.attr1 >= 1 && attributes.attr2 >= 1) {
-        skillTextParts.push(`Vontade e Resiliência: +${vontadeValue + 1}<br>`);
+        skillTextParts.push(`Vontade e Resiliência: +${vontadeValue}<br>`);
     }
 
     if (attributes.attr4 >= 1) {
@@ -178,28 +181,28 @@ function updateSkills() {
     }
 
 
-    if ((attributes.attr3 >= 1 || attributes.attr2 > 1) && attributes.attr3 != 1 && attributes.attr2 != 1) {
+    if ((attributes.attr3 >= 1 && attributes.attr2 >= 1) ) {
         skillTextParts.push(`Controle: +${(controleValue)}  <br>
     `);
     }
 
-    if (true) {
+    if (attributes.attr3 >= 1 && attributes.attr2 >= 1) {
         skillTextParts.push(`Costume: ${Math.round((conta(controleValue, numeros) * 100))} | ${(conta(controleValue, numeros) * 10)}  <br>
     `);
     }
 
-    if ((attributes.attr4 >= 1 && attributes.attr8 >= 1)) {
+    if ((attributes.attr4 >= 1)) {
         skillTextParts.push(`Conhecimento: +${(conhecimentoValue)} <br>
     `);
     }
 
-    if (true) {
+    if (attributes.attr4 >= 1) {
         skillTextParts.push(`Informações: ${Math.round((conta(conhecimentoValue, numeros) * 100 * (attributes.attr8 != 0 ? attributes.attr8 : 1)))} | ${(conta(conhecimentoValue, numeros) * 10 * (attributes.attr8 != 0 ? attributes.attr8 : 1))} Limite: ${(attributes.attr8 != 0 ? attributes.attr8 : 1)} <br>
     `);
     }
 
-    if ((attributes.attr2 > 1 && attributes.attr4 > 1)) {
-        skillTextParts.push(`Convencer: +${Math.floor((convencerValue) / 3)} <br>
+    if ((attributes.attr2 >= 1 && attributes.attr4 >= 1)) {
+        skillTextParts.push(`Convencer: +${convencerValue} <br>
     `);
     }
 
