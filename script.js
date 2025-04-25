@@ -66,10 +66,13 @@ function updateSkills() {
         9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
     ];
     // Verifica a condição de Defesa e adiciona à skillText se a condição for atendida
-    defenseValue = attributes.attr1 * attributes.attr3 >= 1 ? attributes.attr1 > attributes.attr3 ? attributes.attr1 : attributes.attr3 : 1;
+    defenseValue = attributes.attr3 >= 3 ? attributes.attr3 + 2 : attributes.attr3;
+
+    defensedefortitudeValue = attributes.attr1 >= 3 ? attributes.attr1+ 2 : attributes.attr1;
 
 
-    fortitudeValue = attributes.attr1 * attributes.attr3 >= 1 ? attributes.attr1 * attributes.attr3 : 1;
+
+    fortitudeValue = attributes.attr1 >= 3 ? ((( attributes.attr1)) * 2) : +1+((-1+attributes.attr1)*2) ;
 
 
     resistValue = attributes.attr1 * attributes.attr3 >= 4 ? attributes.attr1 * attributes.attr3 : attributes.attr1 > attributes.attr3 ? attributes.attr1 : attributes.attr3
@@ -97,56 +100,15 @@ function updateSkills() {
     let skillTextParts = [];  // Array para armazenar as partes de skillText
 
     if (attributes.attr3 * attributes.attr1 >= 1) {
-        if (attributes.attr3 > attributes.attr1) {
-            if (attributes.attr3 == 2 && attributes.attr1 == 1) {
-                skillTextParts.push(`Defesa: +2<br> 
-                `);
+        
 
-            } else {
-                skillTextParts.push(`Defesa: +${Math.floor(defenseValue / 2) + defenseValue}<br> 
-                `);
-
-            }
-
-        }
-        if (attributes.attr3 > attributes.attr1) {
-            if (!(attributes.attr3 == 2 && attributes.attr1 == 1)) {
-                skillTextParts.push(`Fortitude: +${Math.floor(fortitudeValue / 2)} (+${Math.floor(defenseValue / 2)})  <br>    
-                `);
-            }else{
-                skillTextParts.push(`Fortitude: +1 (+1)  <br>    
-                `);
-            }
-        }
-
-        if (attributes.attr3 == attributes.attr1) {
+       
             skillTextParts.push(`Defesa: +${defenseValue}<br> 
         `);
-        }
-        if (attributes.attr3 == attributes.attr1) {
-            skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defenseValue})  <br>    
+            skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue })  <br>    
         `);
-        }
+        
 
-        if (attributes.attr3 < attributes.attr1 && Math.floor(defenseValue / 2) > 0) {
-            if (!(attributes.attr1 == 2 && attributes.attr3 == 1)) {
-                skillTextParts.push(`Defesa: +${Math.floor(defenseValue / 2)}<br>`);
-            }else{
-                skillTextParts.push(`Defesa: +1<br>`);
-            }   
-        }
-
-        if (attributes.attr3 < attributes.attr1) {
-            if (!(attributes.attr1 == 2 && attributes.attr3 == 1)) {
-                skillTextParts.push(`Fortitude: +${Math.floor(fortitudeValue / 2) + fortitudeValue}  (+${Math.floor(defenseValue / 2) + defenseValue})  <br>    
-        `);
-            }else{
-                skillTextParts.push(`Fortitude: +2 (+1)  <br>    
-        `);
-            } 
-            
-            
-        }
 
     }
 
