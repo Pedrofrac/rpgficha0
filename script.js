@@ -128,12 +128,16 @@ function updateSkills() {
     `);
     }
     if (attributes.attr1 >= 1) {
-        skillTextParts.push(`Sensibilidade Corporal: +${sensiValue + 1}<br>
+        skillTextParts.push(`Sensibilidade Corporal: +${sensiValue + 1}(d)<br>
     `);
     }
 
     if (atletismoValue >= 1) {
         skillTextParts.push(`Atletismo: +${atletismoValue}<br>`);
+    }
+    
+    if (atletismoValue >= 1) {
+        skillTextParts.push(`Fator de Experiencia: +${attributes.attr7} ED<br>`);
     }
 
     if (true) {
@@ -170,7 +174,7 @@ function updateSkills() {
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
-        skillTextParts.push(`Ensinar: +${attributes.attr5}<br>`);
+        skillTextParts.push(`Ensinar: +${attributes.attr5} ED<br>`);
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
@@ -209,36 +213,6 @@ function updateSkills() {
     `);
     }
 
-    if ((attributes.attr4 >= 1)) {
-        skillTextParts.push(`Fé: +${attributes.attr4} <br>
-    `);
-    }
-
-    if ((attributes.attr1 >= 1)) {
-        skillTextParts.push(`Destino: +${attributes.attr1} <br>
-    `);
-    }
-
-    if ((attributes.attr3 >= 1)) {
-        skillTextParts.push(`Paz: +${attributes.attr3} <br>
-    `);
-    }
-
-    if ((attributes.attr2 >= 1)) {
-        skillTextParts.push(`Evolução: +${attributes.attr2} <br>
-    `);
-    }
-
-
-    if ((attributes.attr6 >= 1 && attributes.attr2 >= 1)) {
-        skillTextParts.push(`Sonho: +${attributes.attr6} <br>
-    `);
-    }
-
-    if ((attributes.attr1 >= 1 && attributes.attr5 >= 1)) {
-        skillTextParts.push(`Amor: +${attributes.attr5} <br>
-    `);
-    }
 
     if ((attributes.attr2 >= 1)) {
         skillTextParts.push(`Ocultar: +${ocultarValue} <br>
@@ -274,6 +248,39 @@ function updateSkills() {
         skillTextParts2.push(`Dano Tóxico: ${(attributes.attr3*3)+ 3} <br>`);
         skillTextParts2.push(`Dano Cortante: ${(attributes.attr3*4)+ 3} <br>`);
         skillTextParts2.push(`Dano Corrosivo: ${(attributes.attr3*2)+ 3} <br>`);
+
+
+        if ((attributes.attr4 >= 1)) {
+            skillTextParts2.push(`Fé: +${attributes.attr4} <br>
+        `);
+        
+    }
+    
+        if ((attributes.attr1 >= 1)) {
+            skillTextParts2.push(`Destino: +${attributes.attr1} <br>
+        `);
+        }
+    
+        if ((attributes.attr3 >= 1)) {
+            skillTextParts2.push(`Paz: +${attributes.attr3} <br>
+        `);
+        }
+    
+        if ((attributes.attr2 >= 1)) {
+            skillTextParts2.push(`Evolução: +${attributes.attr2} <br>
+        `);
+        }
+    
+    
+        if ((attributes.attr6 >= 1 && attributes.attr2 >= 1)) {
+            skillTextParts2.push(`Sonho: +${attributes.attr6} <br>
+        `);
+        }
+    
+        if ((attributes.attr1 >= 1 && attributes.attr5 >= 1)) {
+            skillTextParts2.push(`Amor: +${attributes.attr5} <br>
+        `);
+        }
     
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
@@ -346,5 +353,4 @@ function updateSkills() {
 
 // Atualiza as perícias ao carregar a página
 updateSkills();
-
 
