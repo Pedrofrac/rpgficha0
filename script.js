@@ -92,7 +92,7 @@ function updateSkills() {
         convencerValue = 3;
 
     }
-        
+    sorteValue = (attributes.attr2 * attributes.attr6 >= 1 ? attributes.attr2 * attributes.attr6 : 1 );
     
     
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 3 - 2) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 2);
@@ -137,7 +137,7 @@ function updateSkills() {
     }
     
     if (atletismoValue >= 1) {
-        skillTextParts.push(`Fator de Experiencia: +${attributes.attr7} ED<br>`);
+        skillTextParts.push(`••Fator de Experiencia: +${attributes.attr7} ED<br>`);
     }
 
     if (true) {
@@ -174,7 +174,7 @@ function updateSkills() {
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
-        skillTextParts.push(`Ensinar: +${attributes.attr5} ED<br>`);
+        skillTextParts.push(`••Ensinar: +${attributes.attr5} ED<br>`);
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
@@ -194,7 +194,7 @@ function updateSkills() {
     }
 
     if (attributes.attr3 >= 1 && attributes.attr2 >= 1) {
-        skillTextParts.push(`Costume: ${Math.round((conta(controleValue, numeros) * 100))} | ${(conta(controleValue, numeros) * 10)}  <br>
+        skillTextParts.push(`••Costume: ${Math.round((conta(controleValue, numeros) * 100))} | ${(conta(controleValue, numeros) * 10)}  <br>
     `);
     }
 
@@ -204,7 +204,7 @@ function updateSkills() {
     }
 
     if (attributes.attr4 >= 1) {
-        skillTextParts.push(`Informações: ${Math.round((conta(conhecimentoValue, numeros) * 100 * (attributes.attr8 != 0 ? attributes.attr8 : 1)))} | ${(conta(conhecimentoValue, numeros) * 10 * (attributes.attr8 != 0 ? attributes.attr8 : 1))} Limite: ${(attributes.attr8 != 0 ? attributes.attr8 : 1)} <br>
+        skillTextParts.push(`••Informações: ${Math.round((conta(conhecimentoValue, numeros) * 100 * (attributes.attr8 != 0 ? attributes.attr8 : 1)))} | ${(conta(conhecimentoValue, numeros) * 10 * (attributes.attr8 != 0 ? attributes.attr8 : 1))} Limite: ${(attributes.attr8 != 0 ? attributes.attr8 : 1)} <br>
     `);
     }
 
@@ -222,6 +222,12 @@ function updateSkills() {
         skillTextParts.push(`Força: ${forcaValue + 3} (${2 ** (forcaValue + 3)}Kg)<br>
     `);
     }
+
+    if ((attributes.attr6 >= 1)) {
+        skillTextParts.push(`Sorte: +${sorteValue} (${(attributes.attr6)} ED)<br>
+    `);
+    }
+
 
     // Ordenar o array skillTextParts de forma alfabética
     skillTextParts.sort();
