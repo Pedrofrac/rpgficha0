@@ -1,13 +1,13 @@
 // Atributos iniciais
 let attributes = {
-    attr1: 0,
-    attr2: 0,
-    attr3: 0,
-    attr4: 0,
-    attr5: 0,
-    attr6: 0,
-    attr7: 0,
-    attr8: 0,
+    attr1: 4,
+    attr2: 4,
+    attr3: 4,
+    attr4: 4,
+    attr5: 4,
+    attr6: 4,
+    attr7: 4,
+    attr8: 4,
 };
 
 
@@ -94,7 +94,11 @@ function updateSkills() {
     }
     sorteValue = (attributes.attr2 * attributes.attr6 >= 1 ? attributes.attr2 * attributes.attr6 : 1 );
     
-    
+    edacasoValue = (attributes.attr6 > 1? 
+        attributes.attr6 > attributes.attr2? 
+        (attributes.attr2 *2) : attributes.attr6 == attributes.attr2?
+         -1 +attributes.attr6 *2:(attributes.attr6 *2) : 
+         attributes.attr6 == attributes.attr2? 1 : 2);
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 3 - 2) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 2);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
 
@@ -109,9 +113,9 @@ function updateSkills() {
         
 
        
-            skillTextParts.push(`Defesa: +${defenseValue}<br> 
+            skillTextParts.push(`Defesa: +${defenseValue} ED<br> 
         `);
-            skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue })  <br>    
+            skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue } ED)  <br>    
         `);
         
 
@@ -120,7 +124,7 @@ function updateSkills() {
 
 
     if (vontadeValue >= 1 && attributes.attr1 >= 1 && attributes.attr2 >= 1) {
-        skillTextParts.push(`Vontade e Resiliência: +${vontadeValue}<br>`);
+        skillTextParts.push(`Vontade e Resiliência: +${vontadeValue} (+${vontadeValue} ED)<br>`);
     }
 
     if (attributes.attr4 >= 1) {
@@ -141,7 +145,7 @@ function updateSkills() {
     }
 
     if (true) {
-        skillTextParts.push(`Pontos de Habilidades: +${attributes.attr7 + 1}<br>
+        skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br>
     `);
     }
 
@@ -151,7 +155,7 @@ function updateSkills() {
     }
 
     if ((attributes.attr1 * attributes.attr4 >= 1)) {
-        skillTextParts.push(`Desvio Passivo: +${attributes.attr4 > attributes.attr1 ? attributes.attr1 : attributes.attr4}<br>
+        skillTextParts.push(`Desvio Passivo: +${attributes.attr4 > attributes.attr1 ? attributes.attr1 : attributes.attr4} ED<br>
     `);
     }
 
@@ -209,7 +213,7 @@ function updateSkills() {
     }
 
     if ((attributes.attr2 >= 1 && attributes.attr4 >= 1)) {
-        skillTextParts.push(`Convencer: +${convencerValue} <br>
+        skillTextParts.push(`Convencer: +${convencerValue} Des/Conforto <br>
     `);
     }
 
@@ -219,16 +223,19 @@ function updateSkills() {
     `);
     }
     if ((attributes.attr3 >= 0)) {
-        skillTextParts.push(`Força: ${forcaValue + 3} (${2 ** (forcaValue + 3)}Kg)<br>
+        skillTextParts.push(`Força: +${forcaValue + 3} ED (${2 ** (forcaValue + 3)}Kg)<br>
     `);
     }
 
     if ((attributes.attr6 >= 1)) {
-        skillTextParts.push(`Sorte: +${sorteValue} (${(attributes.attr6)} ED)<br>
+        skillTextParts.push(`Sorte: +${sorteValue}<br>
     `);
     }
 
-
+    if ((attributes.attr6 >= 1)) {
+        skillTextParts.push(`Acaso: +${sorteValue+attributes.attr6} ( +${( edacasoValue)}ED ) -5 Conforto<br>
+    `);
+    }
     // Ordenar o array skillTextParts de forma alfabética
     skillTextParts.sort();
     skillTextParts.push(`</b>`);
