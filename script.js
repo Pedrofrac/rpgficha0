@@ -1,13 +1,13 @@
 // Atributos iniciais
 let attributes = {
-    attr1: 4,
-    attr2: 4,
-    attr3: 4,
-    attr4: 4,
-    attr5: 4,
-    attr6: 4,
-    attr7: 4,
-    attr8: 4,
+    attr1: 0,
+    attr2: 0,
+    attr3: 0,
+    attr4: 0,
+    attr5: 0,
+    attr6: 0,
+    attr7: 0,
+    attr8: 0,
 };
 
 
