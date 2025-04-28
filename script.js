@@ -33,7 +33,7 @@ function toggleAttributesPosition() {
         attributesContainer.classList.add('attributes-fixed');
         // Altera a margin-top para 3px
         skillsContainer.style.marginTop = '284px';
-       
+
     } else {
 
         // Se a posição atual for fixed, muda para static
@@ -70,11 +70,11 @@ function updateSkills() {
     ];
     // Verifica a condição de Defesa e adiciona à skillText se a condição for atendida
     defenseValue = attributes.attr3 >= 3 ? attributes.attr3 + 2 : attributes.attr3;
-    defensedefortitudeValue = attributes.attr1 >= 3 ? attributes.attr1+ 2 : attributes.attr1;
-    fortitudeValue = attributes.attr1 >= 3 ? ((( attributes.attr1-1)) *3) : +1+((-1+attributes.attr1)*2) ;
+    defensedefortitudeValue = attributes.attr1 >= 3 ? attributes.attr1 + 2 : attributes.attr1;
+    fortitudeValue = attributes.attr1 >= 3 ? (((attributes.attr1 - 1)) * 3) : +1 + ((-1 + attributes.attr1) * 2);
     // espada e paus
     vontadeValue = attributes.attr1 > 1 && attributes.attr2 > 1 ? (attributes.attr1 * attributes.attr2) + 3 : (attributes.attr1 + attributes.attr2);
-    sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >=1 ? attributes.attr1 :0;
+    sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >= 1 ? attributes.attr1 : 0;
     forcaValue = attributes.attr3 > attributes.attr7 ? attributes.attr3 : attributes.attr7;
     percepcaoValue = (attributes.attr4 >= 3 ? ((attributes.attr4 - 1) * 2 + 1) : attributes.attr4 == 1 ? - 2 : attributes.attr4);
     sensiValue = (attributes.attr1 >= 3 ? ((attributes.attr1) * 3 - 3) : attributes.attr1 == 1 ? 0 : attributes.attr1 + 1);
@@ -83,26 +83,28 @@ function updateSkills() {
     velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2
     protegerValue = (attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr1);
     controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1)
-    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1 );
-    
-  
-    convencerValue = (attributes.attr4 > 1 && attributes.attr2 > 1? attributes.attr4 > attributes.attr2? 1 +(attributes.attr2 *2) : attributes.attr4 == attributes.attr2? attributes.attr2 *2: 1+ (attributes.attr4 *2) : attributes.attr4 == attributes.attr2? 1 : 2);
-    
-    if (attributes.attr4 == 2 && attributes.attr2 == 2){
+    conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1);
+
+
+    convencerValue = (attributes.attr4 > 1 && attributes.attr2 > 1 ? attributes.attr4 > attributes.attr2 ? 1 + (attributes.attr2 * 2) : attributes.attr4 == attributes.attr2 ? attributes.attr2 * 2 : 1 + (attributes.attr4 * 2) : attributes.attr4 == attributes.attr2 ? 1 : 2);
+
+    if (attributes.attr4 == 2 && attributes.attr2 == 2) {
         convencerValue = 3;
 
     }
-    sorteValue = (attributes.attr2 * attributes.attr6 >= 1 ? attributes.attr2 * attributes.attr6 : 1 );
-    
-    edacasoValue = (attributes.attr6 > 1? 
-        attributes.attr6 > attributes.attr2? 
-        (attributes.attr2 *2) : attributes.attr6 == attributes.attr2?
-         -1 +attributes.attr6 *2:(attributes.attr6 *2) : 
-         attributes.attr6 == attributes.attr2? 1 : 2);
+    sorteValue = (attributes.attr2 * attributes.attr6 >= 1 ? attributes.attr2 * attributes.attr6 : 1);
+
+    edacasoValue = (attributes.attr6 > 1 ?
+        attributes.attr6 > attributes.attr2 ?
+            (attributes.attr2 * 2) : attributes.attr6 == attributes.attr2 ?
+                -1 + attributes.attr6 * 2 : (attributes.attr6 * 2) :
+        attributes.attr6 == attributes.attr2 ? 1 : 2);
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 3 - 2) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 2);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
+    
+    inventarioValue = (attributes.attr3==0?3:attributes.attr3==1?5:attributes.attr3>=2?10+(5*(attributes.attr3-2)):1);    
 
-
+    pesoValue = (forcaValue==0?6:Math.floor((((forcaValue-1)/3) +6)));
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
 
@@ -110,14 +112,14 @@ function updateSkills() {
     let skillTextParts = ["<b>"];  // Array para armazenar as partes de skillText
 
     if (attributes.attr3 * attributes.attr1 >= 1) {
-        
 
-       
-            skillTextParts.push(`Defesa: +${defenseValue} ED<br> 
+
+
+        skillTextParts.push(`Defesa: +${defenseValue} ED<br> 
         `);
-            skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue } ED)  <br>    
+        skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue} ED)  <br>    
         `);
-        
+
 
 
     }
@@ -139,7 +141,7 @@ function updateSkills() {
     if (atletismoValue >= 1) {
         skillTextParts.push(`Atletismo: +${atletismoValue}<br>`);
     }
-    
+
     if (atletismoValue >= 1) {
         skillTextParts.push(`••Fator de Experiencia: +${attributes.attr7} ED<br>`);
     }
@@ -192,7 +194,7 @@ function updateSkills() {
     }
 
 
-    if ((attributes.attr3 >= 1 && attributes.attr2 >= 1) ) {
+    if ((attributes.attr3 >= 1 && attributes.attr2 >= 1)) {
         skillTextParts.push(`Controle: +${(controleValue)}  <br>
     `);
     }
@@ -216,8 +218,8 @@ function updateSkills() {
         skillTextParts.push(`Convencer: +${convencerValue} Des/Conforto <br>
     `);
     }
-
-
+    
+    
     if ((attributes.attr2 >= 1)) {
         skillTextParts.push(`Ocultar: +${ocultarValue} <br>
     `);
@@ -233,16 +235,16 @@ function updateSkills() {
     }
 
     if ((attributes.attr6 >= 1)) {
-        skillTextParts.push(`Acaso: +${sorteValue+attributes.attr6} ( +${( edacasoValue)}ED ) -5 Conforto<br>
+        skillTextParts.push(`Acaso: +${sorteValue + attributes.attr6} ( +${(edacasoValue)}ED ) -5 Conforto<br>
     `);
     }
     // Ordenar o array skillTextParts de forma alfabética
     skillTextParts.sort();
     skillTextParts.push(`</b>`);
     skillText = skillTextParts.join("");
-    
 
-    
+
+
 
 
 
@@ -251,61 +253,87 @@ function updateSkills() {
 
     // Combinar as partes ordenadas em uma string final
     const attributesContainer = document.querySelector('.attributes');
-    
-    if (attributesContainer.style.position === 'static'){
+
+    if (attributesContainer.style.position === 'static') {
         skillText += `<hr>`;
 
         let skillTextParts2 = [];
-    
+
         skillTextParts2.push(`Dano Impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
-        skillTextParts2.push(`Dano Tóxico: ${(attributes.attr3*3)+ 3} <br>`);
-        skillTextParts2.push(`Dano Cortante: ${(attributes.attr3*4)+ 3} <br>`);
-        skillTextParts2.push(`Dano Corrosivo: ${(attributes.attr3*2)+ 3} <br>`);
+        skillTextParts2.push(`Dano Tóxico: ${(attributes.attr3 * 3) + 3} <br>`);
+        skillTextParts2.push(`Dano Cortante: ${(attributes.attr3 * 4) + 3} <br>`);
+        skillTextParts2.push(`Dano Corrosivo: ${(attributes.attr3 * 2) + 3} <br>`);
 
 
         if ((attributes.attr4 >= 1)) {
             skillTextParts2.push(`Fé: +${attributes.attr4} <br>
         `);
-        
-    }
-    
+        }
+
+        if ((attributes.attr8 >= 1)) {
+            skillTextParts2.push(`Felicidade: +${attributes.attr8} <br>
+        `);
+        }
+
         if ((attributes.attr1 >= 1)) {
             skillTextParts2.push(`Destino: +${attributes.attr1} <br>
         `);
         }
-    
+
         if ((attributes.attr3 >= 1)) {
             skillTextParts2.push(`Paz: +${attributes.attr3} <br>
         `);
         }
-    
+
         if ((attributes.attr2 >= 1)) {
             skillTextParts2.push(`Evolução: +${attributes.attr2} <br>
         `);
         }
-    
-    
+
+
         if ((attributes.attr6 >= 1 && attributes.attr2 >= 1)) {
             skillTextParts2.push(`Sonho: +${attributes.attr6} <br>
         `);
         }
-    
+
         if ((attributes.attr1 >= 1 && attributes.attr5 >= 1)) {
             skillTextParts2.push(`Amor: +${attributes.attr5} <br>
         `);
         }
-    
+
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
 
+        
+
     }
-    
+
+    if (attributesContainer.style.position === 'static') {
+        skillText += `<hr><b>`;
+
+        let skillTextParts2 = [];
+        skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
+        skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
+        skillTextParts2.push(`Alcance Fizico: ${pesoValue-5}d<br> `);
+        skillTextParts2.push(`Visibilidade: +${pesoValue-6}<br> `);
+        if (attributes.attr1 >= 1) {
+            skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue+1}d<br>`);
+        }
 
 
-   
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+        skillText += `</b>`;
+        
+
+    }
+
+
+
+
     skillText += ` <hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>`;
 
-    
+
 
 
 
