@@ -423,7 +423,7 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5}d<br> `);
-            skillTextParts2.push(`Visibilidade Para Outros: +${visibilidadeValue} (+${ocultarbonusValue} <br> `);
+            //skillTextParts2.push(`Visibilidade Para Outros: +${visibilidadeValue} (+${ocultarbonusValue} <br> `);
             if (attributes.attr1 >= 1) {
                 skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
             }
@@ -432,7 +432,7 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
-            skillTextParts2.push(`Visibilidade Para Outros: ${visibilidadeValue}(+${ocultarbonusValue}<br> `);
+           // skillTextParts2.push(`Visibilidade Para Outros: ${visibilidadeValue}(+${ocultarbonusValue}<br> `);
             if (attributes.attr1 >= 1) {
                 skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
             }
