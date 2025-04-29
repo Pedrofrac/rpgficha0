@@ -118,10 +118,10 @@ function updateSkills() {
                 -1 + attributes.attr6 * 2 : (attributes.attr6 * 2) :
         attributes.attr6 == attributes.attr2 ? 1 : 2);
 
-    ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 2 - 1) : attributes.attr2 == 1 ? 1 : attributes.attr2 +1);
+    ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 2 - 1) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 1);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
 
-
+    ocultrarsalvaValue = 0;
 
 
 
@@ -138,10 +138,10 @@ function updateSkills() {
 
 
     if (visibilidadeValue >= 0) {
-        ocultarbonusValue = -(+4+ ( visibilidadeValue>= 3 ? (( visibilidadeValue - 1) * 2 + 1) :  visibilidadeValue == 1 ? - 2 :  visibilidadeValue));
+        ocultarbonusValue = -(+4 + (visibilidadeValue >= 3 ? ((visibilidadeValue - 1) * 2 + 1) : visibilidadeValue == 1 ? - 2 : visibilidadeValue));
     } else {
         visibilidadeValue = visibilidadeValue * -1;
-        ocultarbonusValue =(4+ ( visibilidadeValue>= 3 ? (( visibilidadeValue - 1) * 2 + 1) :  visibilidadeValue == 1 ? - 2 :  visibilidadeValue));
+        ocultarbonusValue = (4 + (visibilidadeValue >= 3 ? ((visibilidadeValue - 1) * 2 + 1) : visibilidadeValue == 1 ? - 2 : visibilidadeValue));
         visibilidadeValue = visibilidadeValue * -1;
     }
     if (visibilidadeValue == 0) {
@@ -216,10 +216,10 @@ function updateSkills() {
     `);
     }
 
-    if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0) )) {
+    if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
         skillTextParts.push(`Desviar: +${desvioValue}<br>
     `);
-    }else if (desvioValue !=0) {
+    } else if (desvioValue != 0) {
         skillTextParts.push(`Desviar: ${-desvioValue}<br>
     `);
     }
@@ -229,18 +229,18 @@ function updateSkills() {
     `);
     }
 
-    if (!(attributes.attr3 < 0 || attributes.attr4 < 0 && velocidadeValue !=0)) {
-        if (velocidadebonusValue <= 0 && velocidadeValue !=0) {
+    if (!(attributes.attr3 < 0 || attributes.attr4 < 0 && velocidadeValue != 0)) {
+        if (velocidadebonusValue <= 0 && velocidadeValue != 0) {
             skillTextParts.push(`Velocidade de Ataque: +${velocidadeValue}
                 <br>`);
-        } else if (velocidadeValue !=0) {
+        } else if (velocidadeValue != 0) {
             skillTextParts.push(`Velocidade de Ataque: +${velocidadeValue} ( +${velocidadebonusValue} ED)
                 <br>`);
 
         }
 
-    }else if(velocidadeValue !=0) {
-        
+    } else if (velocidadeValue != 0) {
+
         if (velocidadebonusValue <= 0) {
             skillTextParts.push(`Velocidade de Ataque: ${-velocidadeValue}
                 <br>`);
@@ -309,15 +309,18 @@ function updateSkills() {
     }
 
 
-    if ((attributes.attr2 >= 1 )) {
-        skillTextParts.push(`Ocultar: +${ocultarValue+ocultarbonusValue} <br>
+    if ((attributes.attr2 >= 1)) {
+        skillTextParts.push(`Ocultar: +${ocultarValue + ocultarbonusValue} <br>
     `);
-    }else if ((attributes.attr2 < 0)) {
-        skillTextParts.push(`Ocultar: ${-ocultarValue+ocultarbonusValue} <br>
+        ocultrarsalvaValue = ocultarValue + ocultarbonusValue;
+    } else if ((attributes.attr2 < 0)) {
+        skillTextParts.push(`Ocultar: ${-ocultarValue + ocultarbonusValue} <br>
     `);
-    }else if (-1+ocultarValue+ocultarbonusValue != 0){
-        skillTextParts.push(`Ocultar: ${-1+ocultarValue+ocultarbonusValue} <br>
+        ocultrarsalvaValue = -ocultarValue + ocultarbonusValue;
+    } else if (-1 + ocultarValue + ocultarbonusValue != 0) {
+        skillTextParts.push(`Ocultar: ${-1 + ocultarValue + ocultarbonusValue} <br>
             `);
+        ocultrarsalvaValue = -1 + ocultarValue + ocultarbonusValue;
     }
 
     if ((attributes.attr3 >= 0)) {
@@ -432,7 +435,7 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
-           // skillTextParts2.push(`Visibilidade Para Outros: ${visibilidadeValue}(+${ocultarbonusValue}<br> `);
+            // skillTextParts2.push(`Visibilidade Para Outros: ${visibilidadeValue}(+${ocultarbonusValue}<br> `);
             if (attributes.attr1 >= 1) {
                 skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
             }
@@ -442,6 +445,98 @@ function updateSkills() {
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
         skillText += `</b>`;
+
+
+        skillText += `<hr><b>`;
+        skillText += `<h1>Reações</h1>`;
+
+        skillTextParts2 = [];
+        skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} ED (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
+
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+        skillText += `<hr><b>`;
+        skillText += `<h1>Ações Simples</h1>`;
+
+        skillTextParts2 = [];
+
+        // Função para criar botão e conteúdo oculto
+        function createActionButton(actionName, details) {
+            const id = `details_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
+            return `
+        <div style="margin-bottom:10px;">
+            <span style="margin-right:10px;">${actionName}</span>
+            <button onclick="document.getElementById('${id}').style.display = 
+            document.getElementById('${id}').style.display === 'none' ? 'block' : 'none';">
+            </button>
+            <div id="${id}" style="display:none; margin-left:20px; margin-top:5px;">
+                ${details}
+            </div>
+        </div>
+         `;
+        }
+
+        // Criar os botões
+        skillTextParts2.push(createActionButton('Empurrar', `
+            EfeitoemArea|Ocultar>${ocultrarsalvaValue}<br>
+            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg) (0|1|2|3)d<br>
+            Dano por d(${0 * 3 + 5}|${1 * 3 + 5}|${2 * 3 + 5}|${3 * 3 + 5})ED<br>
+            (${attributes.attr3}ED - Peso Alvo )d
+        `));
+
+        if (attributes.attr1 >= 1) {
+            skillTextParts2.push(createActionButton('Disparo', `
+                ${attributes.attr3 - 3} ED a ${sensiValue + 1}d<br>Outra Versão: Diparo Nulo
+            `));
+        } else if (attributes.attr1 < 0) {
+            skillTextParts2.push(createActionButton('Disparo', `
+                ${attributes.attr3 - 3} ED a ${-sensiValue - 1}d<br>Outra Versão: Diparo Nulo
+            `));
+        } else {
+            skillTextParts2.push(createActionButton('Disparo', `
+                ${attributes.attr3 - 3} ED a 0d <br>
+                Outra Versão: Diparo Nulo
+            `));
+        }
+
+        skillTextParts2.push(createActionButton('Golpe', `${attributes.attr3} ED`));
+        skillTextParts2.push(createActionButton('Toque', `Toque`));
+        skillTextParts2.push(createActionButton('Derrubar', `
+            Peso Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)<br>
+            Dano 5 ED<br>
+            Alvo caído
+        `));
+        skillTextParts2.push(createActionButton('Segurar', `
+            ${attributes.attr3}ED (${2 ** (attributes.attr3)}Kg)<br>
+            Força Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)
+        `));
+        skillTextParts2.push(createActionButton('Puxar', `
+            Apenas Horizontal<br>
+            ${attributes.attr3 + 2} ED (${2 ** (attributes.attr3 + 2)}Kg)<br>
+            Evento -5 Saude ou impacto<br>
+            Combate -1/t Saude ou impacto<br>
+            - Saúde|imp para alvo apenas
+        `));
+        skillTextParts2.push(createActionButton('Levantar|Empunhar', `
+            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg)<br>
+            Limite 2 Braços
+        `));
+        skillTextParts2.push(createActionButton('Arremessar', `
+                ${attributes.attr3 - 3} ED (${2 ** (attributes.attr3 - 3)}Kg)<br>
+                Altura max (${attributes.attr3 - 3}ED - Peso Alvo)d<br>
+                Parcial max 2*(${attributes.attr3 - 3}ED - Peso Al)d<br>
+                Horiz max 3*(${attributes.attr3 - 3}ED - Peso Al)d<br>
+                ••Obj Arremessado recebe=dED<br>
+                ••Obj Dano min 5 ED<br>
+                •Dano no Alvo ${attributes.attr3 - 3} ED<br>
+                •Dano min Alvo 0 ED
+                    `));
+
+        // Organiza
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+        skillText += `</b>`;
+
 
 
     }
@@ -466,6 +561,8 @@ function updateSkills() {
         skillText += `<br><br>
                             Principais dados: <br><br>
                             
+                            
+                            Golpe: 
                             Força comun max: ${forcaValue + 3} (${2 ** (forcaValue + 3)}Kg)<br>
                             Força comun min: ${forcaValue} (${2 ** (forcaValue)}Kg)<br>
                             Habilidade uso de força extra: (+${Math.floor((forcaValue + 3) / 2)} ED)<br><br>
