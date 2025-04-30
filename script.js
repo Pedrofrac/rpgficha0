@@ -106,6 +106,7 @@ function updateSkills() {
 
     convencerValue = (attributes.attr4 > 1 && attributes.attr2 > 1 ? attributes.attr4 > attributes.attr2 ? 1 + (attributes.attr2 * 2) : attributes.attr4 == attributes.attr2 ? attributes.attr2 * 2 : 1 + (attributes.attr4 * 2) : attributes.attr4 == attributes.attr2 ? 1 : 2);
 
+
     if (attributes.attr4 == 2 && attributes.attr2 == 2) {
         convencerValue = 3;
 
@@ -120,25 +121,30 @@ function updateSkills() {
 
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 2 - 1) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 1);
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
-
     ocultrarsalvaValue = 0;
-
-
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
     for (let key in negativosAntigos) {
         attributes[key] = negativosAntigos[key];
     }
+    ocultarValue = ocultarValue+ (attributes.attr3>2?-attributes.attr3 +2:0);
+
+
+
     pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
     inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
 
+    
+    
     visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
 
 
 
-    if (visibilidadeValue >= 0) {
+    if (visibilidadeValue >= 0 && attributes.attr2 >= 0) {
         ocultarbonusValue = -(+4 + (visibilidadeValue >= 3 ? ((visibilidadeValue - 1) * 2 + 1) : visibilidadeValue == 1 ? - 2 : visibilidadeValue));
+
+
     } else {
         visibilidadeValue = visibilidadeValue * -1;
         ocultarbonusValue = (4 + (visibilidadeValue >= 3 ? ((visibilidadeValue - 1) * 2 + 1) : visibilidadeValue == 1 ? - 2 : visibilidadeValue));
@@ -147,6 +153,7 @@ function updateSkills() {
     if (visibilidadeValue == 0) {
         ocultarbonusValue = 0
     }
+
 
 
     let skillTextParts = ["<b>"];  // Array para armazenar as partes de skillText
@@ -310,8 +317,14 @@ function updateSkills() {
 
 
     if ((attributes.attr2 >= 1)) {
-        skillTextParts.push(`Ocultar: +${ocultarValue + ocultarbonusValue} <br>
-    `);
+        if (ocultarValue + ocultarbonusValue > 0) {
+            skillTextParts.push(`Ocultar: +${ocultarValue + ocultarbonusValue} <br>
+                `);
+        } else {
+
+            skillTextParts.push(`Ocultar: ${ocultarValue + ocultarbonusValue} <br>
+                `);
+        }
         ocultrarsalvaValue = ocultarValue + ocultarbonusValue;
     } else if ((attributes.attr2 < 0)) {
         skillTextParts.push(`Ocultar: ${-ocultarValue + ocultarbonusValue} <br>
@@ -424,22 +437,67 @@ function updateSkills() {
 
         if (attributes.attr3 >= 0) {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
+            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br><br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5}d<br> `);
-            //skillTextParts2.push(`Visibilidade Para Outros: +${visibilidadeValue} (+${ocultarbonusValue} <br> `);
             if (attributes.attr1 >= 1) {
                 skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
             }
         } else {
 
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
-            skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
-            // skillTextParts2.push(`Visibilidade Para Outros: ${visibilidadeValue}(+${ocultarbonusValue}<br> `);
+            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br><br>`);
+            skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);  
             if (attributes.attr1 >= 1) {
                 skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
             }
         }
+
+
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+        skillText += `<hr>`;
+        skillText += `<h1>Inf de Items</h1>`;
+
+
+        skillTextParts2 = [];
+
+        if (attributes.attr3 >= 0) {
+
+
+            if (attributes.attr2 == 0 && ocultarValue == 1 && ocultarbonusValue == 0) {
+                skillTextParts2.push(`Ocultar: 0<br><br> `);
+                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
+
+            } else {
+                if (attributes.attr3>2 && attributes.attr2==0 ){
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                }else{
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                }
+            }
+        } else {
+
+            if (attributes.attr3>2 && attributes.attr2==0 ){
+                skillTextParts2.push(`♠Ocultar: ${ocultrarsalvaValue }<br><br>`); 
+                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
+            
+            }else{
+                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+            }
+            
+        }
+
+        skillTextParts2.push(`••Desfesa|Perfuração e Impacto: ${(-ocultrarsalvaValue)}ED<br>`);
+        skillTextParts2.push(`••Desfesa|Toxico : ${(+10-ocultrarsalvaValue)} ED<br><br>`);
+        skillTextParts2.push(`••Desfesa|Corrosivo : ${(-ocultrarsalvaValue)>3?(-ocultrarsalvaValue)-3:0}ED<br>`);
+        skillTextParts2.push(`••Desfesa de 100% do dano abaixo<br>`);
+        
+        skillTextParts2.push(`•Vida e Saúde: ${(attributes.attr3)<9? (attributes.attr3)>0? (-attributes.attr3)+9:9:0} dado min <br> `);
+        skillTextParts2.push(`Espaços: ${-ocultrarsalvaValue} ED Figurativo: (${2**-ocultrarsalvaValue}Kg) <br> `);
+
 
 
         skillTextParts2.sort();
