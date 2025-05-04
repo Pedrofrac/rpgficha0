@@ -77,14 +77,77 @@ function updateSkills() {
             attributes[key] = Math.abs(attributes[key]); // transforma em positivo
         }
     }
+    mostrarValorED_Cust_ou_Infor_mes
+
+    function mostrarValorED_Cust_ou_Infor_mes(indice10) {
+        return Math.round((indice10 / 5) * 100) / 100;
+    }
+
+
+    function mostrarValorED(indice) {
+        valorereal = Math.floor((indice - 1) / 10);
+
+        dado = (valorereal * 10 - indice + 1) + 10;
+
+        if (attributes.attr3 >= -2) {
+            return `Dano:  ${valorereal * 2} | Min: ${dado}d`;
+        } else {
+
+            return `Dano:  ${valorereal * 2} | Min: ${dado}d`;
+        }
+    }
+
+    function mostrarValorEDDefesa(indice2) {
+        if (attributes.attr3 > 0) {
+            return ` ${-indice2 + 10}d >= Bloqueia o dano `;
+        } else {
+            return ` ${-indice2 + 10}d >= Dano dobrado`;
+        }
+    }
+
+    function mostrarValorEDdesvio(indice5) {
+        if (indice5 > 0 && indice5 < 10) {
+            return `${-indice5 + 10}d >= Bloqueia o dano `;
+        } else if (indice5 >= 10) {
+            return `0d >= Bloqueia o dano `;
+        } else {
+            return `9d >= Bloqueia o dano `;
+        }
+
+    }
+
+    function mostrarValorEDresiliencia(indice4) {
+        if (attributes.attr1 >= 0 && attributes.attr2 >= 0) {
+            return ` ${-indice4 + 10}d >= Bloqueia o dano `;
+        } else if (attributes.attr1 <= 0 || attributes.attr2 <= 0) {
+            if (attributes.attr1 < 0) {
+                return ` ${attributes.attr1 + 10}d >= Dano dobrado `;
+            } else {
+                return ` ${attributes.attr2 + 10}d >= Dano dobrado `;
+            }
+        } else {
+            return ` ${-indice4 + 10}d >= Dano dobrado `;
+        }
+
+    }
 
 
 
+    function mostrarValorEDvelocidadedeataque(indice3) {
+        if (attributes.attr3 >= 0) {
+            return `${indice3}d de Vantagem`;
+        } else {
+            return `${indice3}d de Desvantagem`;
+        }
+
+    }
 
     // Verifica a condição de Defesa e adiciona à skillText se a condição for atendida
-    defenseValue = attributes.attr3 >= 3 ? attributes.attr3 + 2 : attributes.attr3;
-    defensedefortitudeValue = attributes.attr1 >= 3 ? attributes.attr1 + 2 : attributes.attr1;
+    defenseValue = attributes.attr3;
+    defensedefortitudeValue = attributes.attr1;
     fortitudeValue = attributes.attr1 >= 3 ? (((attributes.attr1 - 1)) * 3) : +1 + ((-1 + attributes.attr1) * 2);
+    resilienceValue = (attributes.attr2 * attributes.attr1 >= 0 ? attributes.attr1 > attributes.attr2 ? attributes.attr2 : attributes.attr1 : 0);
+    resilienceValue = resilienceValue + (attributes.attr2 * attributes.attr1 >= 4 ? 1 : 0);
     // espada e paus
     vontadeValue = attributes.attr1 > 1 && attributes.attr2 > 1 ? (attributes.attr1 * attributes.attr2) + 3 : (attributes.attr1 + attributes.attr2);
     sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >= 1 ? attributes.attr1 : 0;
@@ -93,16 +156,16 @@ function updateSkills() {
     sensiValue = (attributes.attr1 >= 3 ? ((attributes.attr1) * 3 - 3) : attributes.attr1 == 1 ? 0 : attributes.attr1 + 1);
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3;
     atletismoValue = ((attributes.attr3 * attributes.attr7) >= 1 ? (attributes.attr3) * attributes.attr7 + 3 : attributes.attr3 == 0 ? 0 : attributes.attr3 * 2);
-    velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2
-    protegerValue = (attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr1);
-    controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1)
+
+
+    controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1);
     conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1);
 
-    desvioValue = attributes.attr4 * attributes.attr1 >= 1 ? attributes.attr1 * attributes.attr4 : attributes.attr4 + attributes.attr1 !== 0 ? attributes.attr4 > attributes.attr1 ? attributes.attr4 : attributes.attr1 : 0;
+    desvioValue = attributes.attr4 >= 2 && attributes.attr1 >= 2 ? attributes.attr1 + attributes.attr4 + 1 : attributes.attr4 * attributes.attr1 >= 1 ? attributes.attr4 > attributes.attr1 ? attributes.attr4 + 1 : attributes.attr1 + 1 : 0;
     desbiopassivoValue = attributes.attr4 > attributes.attr1 ? attributes.attr1 : attributes.attr4;
 
     velocidadeValue = attributes.attr3 * attributes.attr4 >= 1 ? attributes.attr3 * attributes.attr4 : attributes.attr4 > attributes.attr3 ? attributes.attr4 : attributes.attr3;
-    velocidadebonusValue = attributes.attr3 * attributes.attr4 >= 1 ? attributes.attr3 > attributes.attr4 ? attributes.attr4 : attributes.attr3 : 0;
+    velocidadebonusValue = attributes.attr3 >= 2 && attributes.attr4 >= 2 ? attributes.attr3 + attributes.attr4 + 1 : attributes.attr3 > attributes.attr4 ? attributes.attr3 + 1 : attributes.attr4 + 1;
 
     convencerValue = (attributes.attr4 > 1 && attributes.attr2 > 1 ? attributes.attr4 > attributes.attr2 ? 1 + (attributes.attr2 * 2) : attributes.attr4 == attributes.attr2 ? attributes.attr2 * 2 : 1 + (attributes.attr4 * 2) : attributes.attr4 == attributes.attr2 ? 1 : 2);
 
@@ -120,7 +183,7 @@ function updateSkills() {
         attributes.attr6 == attributes.attr2 ? 1 : 2);
 
     ocultarValue = (attributes.attr2 >= 3 ? ((attributes.attr2) * 2 - 1) : attributes.attr2 == 1 ? 1 : attributes.attr2 + 1);
-    const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (+${attr6} ED)` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (+${attr5} ED)` : ""));
+    const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (${mostrarValorEDvelocidadedeataque(attr6)})` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (${mostrarValorEDvelocidadedeataque(attr5)})` : ""));
     ocultrarsalvaValue = 0;
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
@@ -128,15 +191,15 @@ function updateSkills() {
     for (let key in negativosAntigos) {
         attributes[key] = negativosAntigos[key];
     }
-    ocultarValue = ocultarValue+ (attributes.attr3>2?-attributes.attr3 +2:0);
-
+    ocultarValue = ocultarValue + (attributes.attr3 > 2 ? -attributes.attr3 + 2 : 0);
+    velocidadeValue = (attributes.attr1 + attributes.attr3 + attributes.attr4) * 2;
 
 
     pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
     inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
 
-    
-    
+
+
     visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
 
 
@@ -162,9 +225,9 @@ function updateSkills() {
 
 
 
-        skillTextParts.push(`Defesa: +${defenseValue} ED<br> 
+        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue)}<br> 
         `);
-        skillTextParts.push(`Fortitude: +${fortitudeValue}  (+${defensedefortitudeValue} ED)  <br>    
+        skillTextParts.push(`Fortitude: (+${fortitudeValue}) ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue)}  <br>    
         `);
 
 
@@ -173,9 +236,9 @@ function updateSkills() {
 
 
 
-        skillTextParts.push(`Defesa: ${-defenseValue} ED<br> 
+        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue)}<br> 
         `);
-        skillTextParts.push(`Fortitude:${-fortitudeValue}  (${-defensedefortitudeValue} ED)  <br>    
+        skillTextParts.push(`Fortitude:(${-fortitudeValue})  ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue)}  <br>    
         `);
 
 
@@ -184,9 +247,12 @@ function updateSkills() {
 
 
     if (vontadeValue >= 1 && attributes.attr1 >= 1 && attributes.attr2 >= 1) {
-        skillTextParts.push(`Vontade e Resiliência: +${vontadeValue} (+${vontadeValue} ED)<br>`);
+        skillTextParts.push(`Vontade : +${vontadeValue}<br>`);
+        skillTextParts.push(`Resiliência: ${mostrarValorEDresiliencia(resilienceValue)}<br>`);
+
     } if (attributes.attr1 < 0 && attributes.attr2 < 0) {
-        skillTextParts.push(`Vontade e Resiliência: ${-vontadeValue} (${-vontadeValue} ED)<br>`);
+        skillTextParts.push(`Vontade : ${-vontadeValue}<br>`);
+        skillTextParts.push(`Resiliência: ${mostrarValorEDresiliencia(resilienceValue)}<br>`);
     }
 
 
@@ -201,10 +267,10 @@ function updateSkills() {
 
 
     if (attributes.attr1 >= 1) {
-        skillTextParts.push(`Sensibilidade Corporal: +${sensiValue + 1}(d)<br>
+        skillTextParts.push(`Sensibilidade Corporal: +${sensiValue + 1}<br>
     `);
     } if (attributes.attr1 < 0) {
-        skillTextParts.push(`Sensibilidade Corporal: ${-sensiValue - 1}(d)<br>
+        skillTextParts.push(`Sensibilidade Corporal: ${-sensiValue - 1}<br>
     `);
     }
 
@@ -215,52 +281,52 @@ function updateSkills() {
     }
 
     if (atletismoValue >= 1 && attributes.attr7 >= 1) {
-        skillTextParts.push(`••Fator de Experiencia: +${attributes.attr7} ED<br>`);
+        skillTextParts.push(`••Fator de Experiencia: ${mostrarValorED(attributes.attr7+1)}<br>`);
     }
 
     if (true) {
         skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br>
     `);
     }
-
-    if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
-        skillTextParts.push(`Desviar: +${desvioValue}<br>
-    `);
-    } else if (desvioValue != 0) {
-        skillTextParts.push(`Desviar: ${-desvioValue}<br>
-    `);
+    if (desvioValue + visibilidadeValue > 0) {
+        if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
+            skillTextParts.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + attributes.attr3)}<br>
+                `);
+        } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
+            skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
+        `);
+        }
+    } else if ((attributes.attr4 >= 0 && attributes.attr1 >= 0)) {
+        skillTextParts.push(`Desviar: (${(desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(desvioValue - visibilidadeValue)}<br>
+        `);
+    } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
+        skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
+        `);
     }
 
-    if ((attributes.attr1 * attributes.attr4 >= 1 && attributes.attr4 > 0 && attributes.attr1 > 0)) {
-        skillTextParts.push(`Desvio Passivo: +${desbiopassivoValue} ED<br>
-    `);
-    }
 
-    if (!(attributes.attr3 < 0 || attributes.attr4 < 0 && velocidadeValue != 0)) {
+    if ((attributes.attr3 > 0 && attributes.attr4 > 0)) {
         if (velocidadebonusValue <= 0 && velocidadeValue != 0) {
             skillTextParts.push(`Velocidade de Ataque: +${velocidadeValue}
                 <br>`);
         } else if (velocidadeValue != 0) {
-            skillTextParts.push(`Velocidade de Ataque: +${velocidadeValue} ( +${velocidadebonusValue} ED)
+            skillTextParts.push(`V de Ataque: +${velocidadeValue} (${mostrarValorEDvelocidadedeataque(velocidadebonusValue)})
                 <br>`);
 
         }
 
+    } else if ((attributes.attr3 >= 0 || attributes.attr4 >= 0) && velocidadeValue < 0) {
+
+        skillTextParts.push(`Velocidade de Ataque: ${velocidadeValue}
+                <br>`);
     } else if (velocidadeValue != 0) {
-
-        if (velocidadebonusValue <= 0) {
-            skillTextParts.push(`Velocidade de Ataque: ${-velocidadeValue}
+        skillTextParts.push(`Velocidade de Ataque: ${velocidadeValue}
                 <br>`);
-        } else {
-            skillTextParts.push(`Velocidade de Ataque: ${-velocidadeValue} ( ${-velocidadebonusValue} ED)
-                <br>`);
-
-        }
-
     }
 
+
     if (attributes.attr3 > 1 || attributes.attr4 > 1 || attributes.attr1 > 1 || attributes.attr2 > 1 && (attributes.attr1 >= 0 && attributes.attr2 >= 0 && attributes.attr3 >= 0 && attributes.attr4 >= 0)) {
-        skillTextParts.push(`Velocidade Conjuração: ${calcularVelocidadeConjuracao(attributes)} <br>`);
+        skillTextParts.push(`V Conjuração: ${calcularVelocidadeConjuracao(attributes)} <br>`);
     }
 
     if (sensopercepcaoValue >= 1) {
@@ -272,7 +338,7 @@ function updateSkills() {
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
-        skillTextParts.push(`••Ensinar: +${attributes.attr5} ED<br>`);
+        skillTextParts.push(`••Ensinar: +${mostrarValorEDvelocidadedeataque(attributes.attr5)}<br>`);
     }
 
     if (attributes.attr1 * attributes.attr5 >= 1) {
@@ -295,24 +361,38 @@ function updateSkills() {
     `);
     }
 
-    if (attributes.attr3 >= 1 && attributes.attr2 >= 1) {
-        skillTextParts.push(`••Costume: ${Math.round((conta(controleValue, numeros) * 100))} | ${(conta(controleValue, numeros) * 10)}  <br>
-    `);
-    }
+
 
     if ((attributes.attr4 >= 1)) {
         skillTextParts.push(`Conhecimento: +${(conhecimentoValue)} <br>
     `);
     }
-
-    if (attributes.attr4 >= 1) {
-        skillTextParts.push(`••Informações: ${Math.round((conta(conhecimentoValue, numeros) * 100 * (attributes.attr8 != 0 ? attributes.attr8 : 1)))} | ${(conta(conhecimentoValue, numeros) * 10 * (attributes.attr8 != 0 ? attributes.attr8 : 1))} Limite: ${(attributes.attr8 != 0 ? attributes.attr8 : 1)} <br>
+    if (attributes.attr3 >= 1 && attributes.attr2 >= 1) {
+        skillTextParts.push(`••Costume: ${mostrarValorED_Cust_ou_Infor_mes(controleValue)} | ${mostrarValorED_Cust_ou_Infor_mes(controleValue) * 130}  <br>
     `);
     }
+
+    if (attributes.attr4 >= 1) {
+        skillTextParts.push(`••Informações: ${Math.round(mostrarValorED_Cust_ou_Infor_mes(conhecimentoValue) * (attributes.attr8 > 0 ? attributes.attr8 : 1) * 100) / 100} | ${mostrarValorED_Cust_ou_Infor_mes(conhecimentoValue) * 130 * (attributes.attr8 > 0 ? attributes.attr8 : 1)} Limite: ${(attributes.attr8 > 0 ? attributes.attr8 : 1)} <br>
+    `);
+    }
+
 
     if ((attributes.attr2 >= 1 && attributes.attr4 >= 1)) {
         skillTextParts.push(`Convencer: +${convencerValue} Des/Conforto <br>
     `);
+    } else if (convencerValue != 0 && (attributes.attr2 <= -1 || attributes.attr4 <= -1)) {
+        if (attributes.attr2 <= -1 && attributes.attr4 <= -1) {
+            skillTextParts.push(`Convencer: ${-convencerValue - 1} Des/Conforto <br>
+                `)
+
+        } else {
+            skillTextParts.push(`Convencer: ${-convencerValue + 1} Des/Conforto <br>
+                `);
+
+        }
+
+
     }
 
 
@@ -337,11 +417,14 @@ function updateSkills() {
     }
 
     if ((attributes.attr3 >= 0)) {
-        skillTextParts.push(`Força: +${forcaValue + 3} ED (${2 ** (forcaValue + 3)}Kg)<br>
+        skillTextParts.push(`Impacto:(${(attributes.attr3 + 3)}) ${mostrarValorED(attributes.attr3 + 3)}<br>`);
+        skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg)<br>
     `);
+
     } if ((attributes.attr3 < 0)) {
-        skillTextParts.push(`Força: ${-forcaValue + 3} ED (${2 ** (-forcaValue + 3)}Kg)<br>
-    `);
+        skillTextParts.push(`Impacto:(${(attributes.attr3 + 3)}) ${mostrarValorED(attributes.attr3 + 3)}<br>`);
+        skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg)<br>
+        `);
     }
 
     if ((attributes.attr6 >= 1)) {
@@ -350,7 +433,7 @@ function updateSkills() {
     }
 
     if ((attributes.attr6 >= 1)) {
-        skillTextParts.push(`Acaso: +${sorteValue + attributes.attr6} ( +${(edacasoValue)}ED ) -5 Conforto<br>
+        skillTextParts.push(`Acaso: (+${sorteValue + attributes.attr6})${(mostrarValorEDvelocidadedeataque(edacasoValue))}-5 Conforto<br>
     `);
     }
 
@@ -377,49 +460,40 @@ function updateSkills() {
 
         let skillTextParts2 = [];
         if (attributes.attr3 >= 0) {
-            skillTextParts2.push(`Dano Impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
-            skillTextParts2.push(`Dano Tóxico: ${(attributes.attr3 * 3) + 3} <br>`);
-            skillTextParts2.push(`Dano Cortante: ${(attributes.attr3 * 4) + 3} <br>`);
-            skillTextParts2.push(`Dano Corrosivo: ${(attributes.attr3 * 2) + 3} <br>`);
-        } else if (attributes.attr3 >= -2) {
-            skillTextParts2.push(`Dano Impacto: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>`);
-            skillTextParts2.push(`Dano Tóxico: ${attributes.attr3 + 3} <br>`);
-            skillTextParts2.push(`Dano Cortante: ${attributes.attr3 + 3} <br>`);
-            skillTextParts2.push(`Dano Corrosivo: ${attributes.attr3 + 3} <br>`);
+            skillTextParts2.push(`Impacto:(${(attributes.attr3 + 3)}) ${mostrarValorED(attributes.attr3 + 3)}<br>`);
+            skillTextParts2.push(`Tóxico:(${((attributes.attr3 * 3) + 3)}) ${mostrarValorED((attributes.attr3 * 3) + 3)} <br>`);
+            skillTextParts2.push(`Cortante:(${((attributes.attr3 * 4) + 3)}) ${mostrarValorED((attributes.attr3 * 4) + 3)} <br>`);
+            skillTextParts2.push(`Corrosivo:(${((attributes.attr3 * 2) + 3)}) ${mostrarValorED((attributes.attr3 * 2) + 3)} <br>`);
         } else {
-            skillTextParts2.push(`Dano Impacto: ${1} (${2 ** (1)}Kg)<br>`);
-            skillTextParts2.push(`Dano Tóxico: ${1} <br>`);
-            skillTextParts2.push(`Dano Cortante: ${1} <br>`);
-            skillTextParts2.push(`Dano Corrosivo: ${1} <br>`);
-
+            skillTextParts2.push(`${mostrarValorED(attributes.attr3 + 3)}<br>`);
         }
 
         if ((attributes.attr4 >= 1)) {
-            skillTextParts2.push(`Fé: +${attributes.attr4} <br>
+            skillTextParts2.push(`•Fé: +${attributes.attr4} <br>
         `);
         }
         if ((attributes.attr8 >= 1)) {
-            skillTextParts2.push(`Felicidade: +${attributes.attr8} <br>
+            skillTextParts2.push(`•Felicidade: +${attributes.attr8} <br>
         `);
         }
         if ((attributes.attr1 >= 1)) {
-            skillTextParts2.push(`Destino: +${attributes.attr1} <br>
+            skillTextParts2.push(`•Destino: +${attributes.attr1} <br>
         `);
         }
         if ((attributes.attr3 >= 1)) {
-            skillTextParts2.push(`Paz: +${attributes.attr3} <br>
+            skillTextParts2.push(`•Paz: +${attributes.attr3} <br>
         `);
         }
         if ((attributes.attr2 >= 1)) {
-            skillTextParts2.push(`Evolução: +${attributes.attr2} <br>
+            skillTextParts2.push(`•Evolução: +${attributes.attr2} <br>
         `);
         }
         if ((attributes.attr6 >= 1 && attributes.attr2 >= 1)) {
-            skillTextParts2.push(`Sonho: +${attributes.attr6} <br>
+            skillTextParts2.push(`•Sonho: +${attributes.attr6} <br>
         `);
         }
         if ((attributes.attr1 >= 1 && attributes.attr5 >= 1)) {
-            skillTextParts2.push(`Amor: +${attributes.attr5} <br>
+            skillTextParts2.push(`•Amor: +${attributes.attr5} <br>
         `);
         }
 
@@ -437,20 +511,26 @@ function updateSkills() {
 
         if (attributes.attr3 >= 0) {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br><br>`);
+            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5}d<br> `);
             if (attributes.attr1 >= 1) {
-                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
+                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}<br>`);
             }
         } else {
 
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br><br>`);
-            skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);  
+            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
+            skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
             if (attributes.attr1 >= 1) {
-                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}d<br>`);
+                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}<br>`);
             }
         }
+        if ((attributes.attr3 < 0 && attributes.attr4 < 0)) {
+            skillTextParts2.push(`<hr>••Dbuff Dano: ${mostrarValorEDvelocidadedeataque(-velocidadebonusValue)}
+                    <br><hr>`);
+        }
+
+
 
 
         skillTextParts2.sort();
@@ -469,34 +549,31 @@ function updateSkills() {
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
 
             } else {
-                if (attributes.attr3>2 && attributes.attr2==0 ){
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+                if (attributes.attr3 > 2 && attributes.attr2 == 0) {
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
                     skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
-                }else{
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+                } else {
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
                     skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
                 }
             }
         } else {
 
-            if (attributes.attr3>2 && attributes.attr2==0 ){
-                skillTextParts2.push(`♠Ocultar: ${ocultrarsalvaValue }<br><br>`); 
+            if (attributes.attr3 > 2 && attributes.attr2 == 0) {
+                skillTextParts2.push(`♠Ocultar: ${ocultrarsalvaValue}<br><br>`);
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
-            
-            }else{
-                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue }<br><br> `);
+
+            } else {
+                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
             }
-            
+
         }
 
-        skillTextParts2.push(`••Desfesa|Perfuração e Impacto: ${(-ocultrarsalvaValue)}ED<br>`);
-        skillTextParts2.push(`••Desfesa|Toxico : ${(+10-ocultrarsalvaValue)} ED<br><br>`);
-        skillTextParts2.push(`••Desfesa|Corrosivo : ${(-ocultrarsalvaValue)>3?(-ocultrarsalvaValue)-3:0}ED<br>`);
-        skillTextParts2.push(`••Desfesa de 100% do dano abaixo<br>`);
-        
-        skillTextParts2.push(`•Vida e Saúde: ${(attributes.attr3)<9? (attributes.attr3)>0? (-attributes.attr3)+9:9:0} dado min <br> `);
-        skillTextParts2.push(`Espaços: ${-ocultrarsalvaValue} ED Figurativo: (${2**-ocultrarsalvaValue}Kg) <br> `);
+        skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue+1))}<br>`);
+        skillTextParts2.push(`••FortDefesa: ${mostrarValorEDdesvio(9)}<br><br>`);
+        skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue- 3)  : mostrarValorEDdesvio(1)}<br>`);
+        skillTextParts2.push(`Espaços: (${-ocultrarsalvaValue}) Figurativo: (${2 ** -ocultrarsalvaValue}Kg) <br> `);
 
 
 
@@ -509,7 +586,7 @@ function updateSkills() {
         skillText += `<h1>Reações</h1>`;
 
         skillTextParts2 = [];
-        skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} ED (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
+        skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
 
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
