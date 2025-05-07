@@ -119,13 +119,6 @@ function updateSkills() {
         }
     }
 
-    function mostrarValorEDEquilibrio(indice11) {
-        if (attributes.attr1 >= 0) {
-            return ` ${-indice11 + 10}d >= Bloqueia o Efeito e Dano `;
-        } else {
-            return ` ${-indice11 + 10}d >= Dano dobrado`;
-        }
-    }
 
     function mostrarValorEDdesvio(indice5) {
         if (indice5 > 0 && indice5 < 10) {
@@ -529,14 +522,16 @@ function updateSkills() {
         skillTextParts2.push(createActionButton('Dano Queda', `Dano de Impacto: 
         <br><br>
         Efeito caido<br><br>
+        Alvo: Altura = n dados<br>
+        No chão: Espaço + altura = n dados.
+        <br><br>
+        Alvo: ${mostrarValorED(7)}<br> 
+        O chão: ${mostrarValorED(2)})
+        <br> <br>
 
-        Alvo: 2 dados de (${mostrarValorED(6)}) Por altura <br> <br>
-        O chão: 1 dado de (${mostrarValorED(6)}) Por altura 
-        + 1 dado do mesmo para cada Espaço do alvo.<br> <br>
-
-        Dano max: Espaços + 3 >= altura. <br>Em alvos<br><br>
+        Dano max: Espaços >= altura -3. <br>Em alvos<br><br>
         
-        Defesa, Equilibrio nesse caso só bloqueará os primeiros dois dados.
+        Defesa, E desvio nesse caso só bloqueará até dois dados no maximo.
         `));
    
         skillText += skillTextParts2.join("");
@@ -646,8 +641,7 @@ function updateSkills() {
             `);
         }
         skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
-        skillTextParts2.push(`Equilibrio: ${mostrarValorEDEquilibrio((attributes.attr1+1))}<br>`);
-
+        
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
         skillText += `<hr><b>`;
