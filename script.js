@@ -10,6 +10,64 @@ let attributes = {
     attr8: 0,
 };
 
+function createMultipleActionButtons(actionName, buttons) {
+    const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
+
+    const buttonHtml = buttons.map(({ label, details }, i) => {
+        const id = `${groupId}_details_${i}`;
+        return `
+            <button style="
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                text-align: left;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 15px;
+                border-radius: 12px;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin-left: 5px;
+                width: auto; /* Garante que o botão se ajuste ao texto */
+            " 
+            onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)';" 
+            onmouseout="this.style.backgroundColor='#4CAF50'; this.style.transform='scale(1)';"
+            onclick="
+                const detailDiv = document.getElementById('${id}');
+                const isVisible = detailDiv.style.display === 'block';
+                // Esconde todas as informações
+                document.querySelectorAll('[data-group=${groupId}]').forEach(el => el.style.display = 'none');
+                // Mostra ou esconde o conteúdo ao clicar no botão
+                detailDiv.style.display = isVisible ? 'none' : 'block';
+            ">
+                ${label}
+            </button>
+            <div id="${id}" data-group="${groupId}" style="display:none; margin-top:5px;">
+                ${details}
+            </div>
+        `;
+    });
+
+    const buttonsOnly = buttonHtml.map(b => b.split('</button>')[0] + '</button>').join('');
+    const detailsOnly = buttonHtml.map(b => b.split('</button>')[1]).join('');
+
+    return `
+    <div style="margin-bottom:5px;">
+        <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+            <span><b>${actionName}</b></span>
+            ${buttonsOnly}
+        </div>
+        <div style="margin-left:20px;">
+            ${detailsOnly}
+        </div>
+    </div>
+    `;
+}
+
+
+
+
 function createActionButton(actionName, details) {
     const id = `details_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
     return `
@@ -296,7 +354,7 @@ function updateSkills() {
     }
 
     if (atletismoValue >= 1 && attributes.attr7 >= 1) {
-        skillTextParts.push(`••Fator de Experiencia: ${mostrarValorED(attributes.attr7+1)}<br>`);
+        skillTextParts.push(`••Fator de Experiencia: ${mostrarValorED(attributes.attr7 + 1)}<br>`);
     }
 
     if (true) {
@@ -475,18 +533,18 @@ function updateSkills() {
 
         let skillTextParts2 = [];
         if (attributes.attr3 >= 0) {
-            skillTextParts2.push(createActionButton('Dano ', 
+            skillTextParts2.push(createActionButton('Dano ',
                 `Impacto: (${attributes.attr3 + 3}) ${mostrarValorED(attributes.attr3 + 3)}<br>` +
                 `Tóxico: (${(attributes.attr3 * 3) + 3}) ${mostrarValorED((attributes.attr3 * 3) + 3)}<br>` +
                 `Cortante: (${(attributes.attr3 * 4) + 3}) ${mostrarValorED((attributes.attr3 * 4) + 3)}<br>` +
                 `Corrosivo: (${(attributes.attr3 * 2) + 3}) ${mostrarValorED((attributes.attr3 * 2) + 3)}<br>`
             ));
         } else {
-            skillTextParts2.push(createActionButton('Dano Atributo 3', 
+            skillTextParts2.push(createActionButton('Dano Atributo 3',
                 `${mostrarValorED(attributes.attr3 + 3)}<br>`
             ));
         }
-        
+
 
         if ((attributes.attr4 >= 1)) {
             skillTextParts2.push(`•Fé: +${attributes.attr4} <br>
@@ -518,24 +576,23 @@ function updateSkills() {
         }
 
         skillTextParts2.sort();
-        
-        skillTextParts2.push(createActionButton('Dano Queda', `Dano de Impacto: 
-        <br><br>
-        Efeito caido<br><br>
-        Alvo: Altura = n dados<br>
-        No chão: Espaço + altura = n dados.
-        <br><br>
-        Alvo: ${mostrarValorED(7)}<br> 
-        O chão: ${mostrarValorED(2)})
-        <br> <br>
 
-        Dano max: Espaços >= altura -3. <br>Em alvos<br><br>
+        skillTextParts2.push(createActionButton('Dano Queda', `Dano de Impacto + Efeito caido<br><br>
         
-        Defesa, E desvio nesse caso só bloqueará até dois dados no maximo.
+        Espaço + altura = n dados.<br> 
+        n( ${mostrarValorED(2)})<br> 
+        <br>
+
+        Dano max: Espaços +10 <= altura. <br>Em alvos<br><br>
+
+        Lesão aleatoria vinda desse dano.<br><br>
+        
+        Defesa e Desvio nesse caso só bloqueará até dois dados no maximo.<br><br>
+        Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
         `));
-   
+
         skillText += skillTextParts2.join("");
-        
+
 
 
 
@@ -608,9 +665,9 @@ function updateSkills() {
 
         }
 
-        skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue+1))}<br>`);
+        skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue + 1))}<br>`);
         skillTextParts2.push(`••FortDefesa: ${mostrarValorEDdesvio(9)}<br><br>`);
-        skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue- 3)  : mostrarValorEDdesvio(1)}<br>`);
+        skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue - 3) : mostrarValorEDdesvio(1)}<br>`);
         skillTextParts2.push(`Espaços: (${-ocultrarsalvaValue}) Figurativo: (${2 ** -ocultrarsalvaValue}Kg) <br> `);
 
 
@@ -624,7 +681,7 @@ function updateSkills() {
         skillText += `<h1>Reações</h1>`;
 
         skillTextParts2 = [];
-        
+
         if (desvioValue + visibilidadeValue > 0) {
             if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
                 skillTextParts2.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + attributes.attr3)}<br>
@@ -641,7 +698,7 @@ function updateSkills() {
             `);
         }
         skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
-        
+
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
         skillText += `<hr><b>`;
@@ -650,7 +707,7 @@ function updateSkills() {
         skillTextParts2 = [];
 
         // Função para criar botão e conteúdo oculto
-        
+
         // Criar os botões
         skillTextParts2.push(createActionButton('Empurrar', `
             EfeitoemArea|Ocultar>${ocultrarsalvaValue}<br>
@@ -676,11 +733,7 @@ function updateSkills() {
 
         skillTextParts2.push(createActionButton('Golpe', `${attributes.attr3} ED`));
         skillTextParts2.push(createActionButton('Toque', `Toque`));
-        skillTextParts2.push(createActionButton('Derrubar', `
-            Peso Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)<br>
-            Dano 5 ED<br>
-            Alvo caído
-        `));
+       
         skillTextParts2.push(createActionButton('Segurar', `
             ${attributes.attr3}ED (${2 ** (attributes.attr3)}Kg)<br>
             Força Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)
@@ -696,17 +749,92 @@ function updateSkills() {
             ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg)<br>
             Limite 2 Braços
         `));
-        arremessarValue = attributes.attr3>=3?attributes.attr3 - 3:0;
-        
-        skillTextParts2.push(createActionButton('Arremessar', `
-                ${arremessarValue} Espaços (${2 ** arremessarValue}Kg)<br>
-                Altura max ${(attributes.attr3+1)*2}d<br>
-                Horiz max ${(attributes.attr3+1)*6}d<br>
-                Dano = Queda altura (${(attributes.attr3+1)*2}d)<br>
-                Dano min = Queda altura (1d)<br>
-                Efeito caido
-                    `));
 
+
+        
+        skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar ', [
+            {
+                label: 'L',
+                details: `
+            Espaço max: ${attributes.attr3 - 2} (${2 ** (attributes.attr3 - 2)}Kg)<br>
+            ${mostrarValorED(6)}<br>
+            Efeito caido
+            `
+            },
+            {
+                label: '🔶',
+                details: `
+            Espaço max: ${attributes.attr3 } (${2 ** (attributes.attr3 + 2)}Kg)<br>
+            ${mostrarValorED(6)}<br>
+            Efeito caido
+            `
+            },
+            {
+                label: '🔷',
+                details: `
+            Espaço max: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>
+            ${mostrarValorED(6)}<br>
+            Efeito caido
+            `
+            },
+            {
+                label: '🔶🔷',
+                details: `
+            Espaço max: ${attributes.attr3 + 6} (${2 ** (attributes.attr3 + 6)}Kg)<br>
+            ${mostrarValorED(6)}<br>
+            Efeito caido
+            `
+            }
+        ]));
+        
+
+        if ((attributes.attr3 <= 2)) {
+            skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+                {
+                    label: '🔶🔷',
+                    details: `
+                ${attributes.attr3} Espaços (${2 ** attributes.attr3}Kg)<br>
+                    Altura máx 3d<br>
+                    Horiz máx 10d<br>
+                    Dano = Queda altura 3d<br>
+                    Dano mín = Queda altura 1d<br>
+                    Efeito Caído<br><br>
+
+                    Somar 3d por cada 1 Espaço superado.
+                `
+                }
+            ]));
+        } else {
+            skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+                {
+                    label: '🔶',
+                    details: `
+                    ${attributes.attr3 - 3} Espaços (${2 ** (attributes.attr3 - 3)}Kg)<br>
+                    Altura máx 3d<br>
+                    Horiz máx 10d<br>
+                    Dano = Queda altura 3d<br>
+                    Dano mín = Queda altura 1d<br>
+                    Efeito Caído<br><br>
+
+                    Somar 3d por cada 1 Espaço superado.
+                `
+                },
+                {
+                    label: '🔶🔷',
+                    details: `
+                ${attributes.attr3} Espaços (${2 ** attributes.attr3}Kg)<br>
+                    Altura máx 3d<br>
+                    Horiz máx 10d<br>
+                    Dano = Queda altura 3d<br>
+                    Dano mín = Queda altura 1d<br>
+                    Efeito Caído<br><br>
+
+                    Somar 3d por cada 1 Espaço superado.
+                `
+                }
+            ]));
+
+        }
         // Organiza
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
