@@ -259,6 +259,8 @@ function updateSkills() {
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (${mostrarValorEDvelocidadedeataque(attr6)})` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (${mostrarValorEDvelocidadedeataque(attr5)})` : ""));
     ocultrarsalvaValue = 0;
 
+    
+
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
     for (let key in negativosAntigos) {
@@ -270,7 +272,7 @@ function updateSkills() {
 
     pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
     inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
-
+    ocultarValuePeso= (attributes.attr2 >=0?Math.floor(attributes.attr2/3):attributes.attr2);
 
 
     visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
@@ -604,21 +606,14 @@ function updateSkills() {
 
         let skillTextParts2 = [];
 
-        if (attributes.attr3 >= 0) {
+        if (attributes.attr3 - ocultarbonusValue >= 0) {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue} Espaços (${2 ** (pesoValue)}Kg) <br>`);
-            skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5}d<br> `);
-            if (attributes.attr1 >= 1) {
-                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}<br>`);
-            }
-        } else {
-
+            skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
+            skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
+        }else{
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
-            if (attributes.attr1 >= 1) {
-                skillTextParts2.push(`Alcance Disparos|Arremesos: ${sensiValue + 1}<br>`);
-            }
         }
         if ((attributes.attr3 < 0 && attributes.attr4 < 0)) {
             skillTextParts2.push(`<hr>••Dbuff Dano: ${mostrarValorEDvelocidadedeataque(-velocidadebonusValue)}
@@ -716,20 +711,7 @@ function updateSkills() {
             (${attributes.attr3}ED - Peso Alvo )d
         `));
 
-        if (attributes.attr1 >= 1) {
-            skillTextParts2.push(createActionButton('Disparo', `
-                ${attributes.attr3 - 3} ED a ${sensiValue + 1}d<br>Outra Versão: Diparo Nulo
-            `));
-        } else if (attributes.attr1 < 0) {
-            skillTextParts2.push(createActionButton('Disparo', `
-                ${attributes.attr3 - 3} ED a ${-sensiValue - 1}d<br>Outra Versão: Diparo Nulo
-            `));
-        } else {
-            skillTextParts2.push(createActionButton('Disparo', `
-                ${attributes.attr3 - 3} ED a 0d <br>
-                Outra Versão: Diparo Nulo
-            `));
-        }
+
 
         skillTextParts2.push(createActionButton('Golpe', `${attributes.attr3} ED`));
         skillTextParts2.push(createActionButton('Toque', `Toque`));
@@ -751,90 +733,105 @@ function updateSkills() {
         `));
 
 
+        function gerarTextoDerrubar(spaces) {
+            return `
+                Espaço máx: ${spaces} (${2 ** spaces}Kg)<br>
+                "${mostrarValorED(6)}"<br><br>
+                Efeito caído<br>
+                Efeito em area se: Alvo Menor que ${pesoValue - ocultarValuePeso} Espaços<br><br>
+
+                " ": Pois não se dá dano apenas o efeito caido. E para desvios contar como esse dano.
+            `;
+        }
+        if (attributes.attr3<2)
+        {
+            skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
+                {
+                    label: '🔶',
+                    details: gerarTextoDerrubar(attributes.attr3)
+                },
+                {
+                    label: '🔷',
+                    details: gerarTextoDerrubar(attributes.attr3 + 3)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoDerrubar(attributes.attr3 + 6)
+                }
+            ]));
+
+        }else{
+            skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
+                {
+                    label: 'L',
+                    details: gerarTextoDerrubar(attributes.attr3 - 2)
+                },
+                {
+                    label: '🔶',
+                    details: gerarTextoDerrubar(attributes.attr3)
+                },
+                {
+                    label: '🔷',
+                    details: gerarTextoDerrubar(attributes.attr3 + 3)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoDerrubar(attributes.attr3 + 6)
+                }
+            ]));
+
+
+        }
         
-        skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar ', [
-            {
-                label: 'L',
-                details: `
-            Espaço max: ${attributes.attr3 - 2} (${2 ** (attributes.attr3 - 2)}Kg)<br>
-            ${mostrarValorED(6)}<br>
-            Efeito caido
-            `
-            },
-            {
-                label: '🔶',
-                details: `
-            Espaço max: ${attributes.attr3 } (${2 ** (attributes.attr3 + 2)}Kg)<br>
-            ${mostrarValorED(6)}<br>
-            Efeito caido
-            `
-            },
-            {
-                label: '🔷',
-                details: `
-            Espaço max: ${attributes.attr3 + 3} (${2 ** (attributes.attr3 + 3)}Kg)<br>
-            ${mostrarValorED(6)}<br>
-            Efeito caido
-            `
-            },
-            {
-                label: '🔶🔷',
-                details: `
-            Espaço max: ${attributes.attr3 + 6} (${2 ** (attributes.attr3 + 6)}Kg)<br>
-            ${mostrarValorED(6)}<br>
-            Efeito caido
-            `
+        
+        function gerarTextoArremesso(spaces) {
+            let texttemp = '0'; // Inicializa com valor padrão
+        
+            if (attributes.attr1 >= 1) {
+                texttemp = `${sensiValue + 1}`;
+            } else if (attributes.attr1 < 0) {
+                texttemp = `-${sensiValue + 1}`;
             }
-        ]));
+            return `
+                Espaços Max:  ${spaces}  (${2 ** spaces}Kg)<br><br>
+                
+                Altura máx: 3d<br>
+                Distancia máx horizontal: 10d<br>
+                Distancia máx de acerto: ${texttemp}d <br>
+                <br>
+
+                Dano max: 3d10 ${mostrarValorED(2)} <br>
+                Dano mín: 1d10 ${mostrarValorED(2)}<br><br>
+                
+                Efeito Caído<br>
+                Efeito em area para alvo acertado se: Alvo Menor ${spaces} Espaços Max<br><br>
+
+
+                Somar 3d por cada 1 Espaço superado. O inverso também pode.<br><br>
+            `;
+        }
         
 
-        if ((attributes.attr3 <= 2)) {
+        if (attributes.attr3 <= 2) {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
                 {
                     label: '🔶🔷',
-                    details: `
-                ${attributes.attr3} Espaços (${2 ** attributes.attr3}Kg)<br>
-                    Altura máx 3d<br>
-                    Horiz máx 10d<br>
-                    Dano = Queda altura 3d<br>
-                    Dano mín = Queda altura 1d<br>
-                    Efeito Caído<br><br>
-
-                    Somar 3d por cada 1 Espaço superado.
-                `
+                    details: gerarTextoArremesso(attributes.attr3)
                 }
             ]));
         } else {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
                 {
                     label: '🔶',
-                    details: `
-                    ${attributes.attr3 - 3} Espaços (${2 ** (attributes.attr3 - 3)}Kg)<br>
-                    Altura máx 3d<br>
-                    Horiz máx 10d<br>
-                    Dano = Queda altura 3d<br>
-                    Dano mín = Queda altura 1d<br>
-                    Efeito Caído<br><br>
-
-                    Somar 3d por cada 1 Espaço superado.
-                `
+                    details: gerarTextoArremesso(attributes.attr3 - 3)
                 },
                 {
                     label: '🔶🔷',
-                    details: `
-                ${attributes.attr3} Espaços (${2 ** attributes.attr3}Kg)<br>
-                    Altura máx 3d<br>
-                    Horiz máx 10d<br>
-                    Dano = Queda altura 3d<br>
-                    Dano mín = Queda altura 1d<br>
-                    Efeito Caído<br><br>
-
-                    Somar 3d por cada 1 Espaço superado.
-                `
+                    details: gerarTextoArremesso(attributes.attr3)
                 }
             ]));
-
         }
+        
         // Organiza
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
