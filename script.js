@@ -793,21 +793,23 @@ function updateSkills() {
                 texttemp = `-${sensiValue + 1}`;
             }
             return `
-                Espaços Max:  ${spaces}  (${2 ** spaces}Kg)<br><br>
+                •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br><br>
                 
-                Altura máx: 3d<br>
-                Distancia máx horizontal: 10d<br>
-                Distancia máx de acerto: ${texttemp}d <br>
-                <br>
+                •Altura máx Obj: 3d<br>
+                •Distancia máx horizontal Obj: 10d<br><br>
+                •Distancia máx de Acerto Alvo: <br>Menos Ocultar do alvo + ${texttemp}d
+                <br><br>
 
-                Dano max: 3d10 ${mostrarValorED(2)} <br>
+                •Dano tanto no alvo quanto no obj. Segue como Dano de Queda<br>
+                Dano max: 3d10 ${mostrarValorED(2)}<br>
                 Dano mín: 1d10 ${mostrarValorED(2)}<br><br>
                 
-                Efeito Caído<br>
-                Efeito em area para alvo acertado se: Alvo Menor ${spaces} Espaços Max<br><br>
+                •Efeito Caído: no Alvo e Obj<br><br>
+                •Dano a Inventario: (o mesmo de Efeito em area) Para Obj.<br><br>
+                •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
+                
 
-
-                Somar 3d por cada 1 Espaço superado. O inverso também pode.<br><br>
+                •Somar 3d e um dado extra por cada 1 Espaço superado (exceto Distancia máx de Acerto Alvo). O inverso numerico também pode.<br><br>
             `;
         }
         
@@ -934,4 +936,3 @@ function updateSkills() {
 
 // Atualiza as perícias ao carregar a página
 updateSkills();
-
