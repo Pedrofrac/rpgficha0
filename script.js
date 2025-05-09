@@ -259,7 +259,7 @@ function updateSkills() {
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (${mostrarValorEDvelocidadedeataque(attr6)})` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (${mostrarValorEDvelocidadedeataque(attr5)})` : ""));
     ocultrarsalvaValue = 0;
 
-    
+
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
@@ -272,7 +272,7 @@ function updateSkills() {
 
     pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
     inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
-    ocultarValuePeso= (attributes.attr2 >=0?Math.floor(attributes.attr2/3):attributes.attr2);
+    ocultarValuePeso = (attributes.attr2 >= 0 ? Math.floor(attributes.attr2 / 3) : attributes.attr2);
 
 
     visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
@@ -610,10 +610,13 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
-        }else{
+            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br> `);
+
+        } else {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
+            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br> `);
         }
         if ((attributes.attr3 < 0 && attributes.attr4 < 0)) {
             skillTextParts2.push(`<hr>••Dbuff Dano: ${mostrarValorEDvelocidadedeataque(-velocidadebonusValue)}
@@ -635,27 +638,31 @@ function updateSkills() {
 
 
             if (attributes.attr2 == 0 && ocultarValue == 1 && ocultarbonusValue == 0) {
-                skillTextParts2.push(`Ocultar: 0<br><br> `);
+                skillTextParts2.push(`Ocultar: 0<br> `);
+                skillTextParts2.push(`Visibilidade: 0<br><br> `);
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
 
             } else {
                 if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
+                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
                     skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
                 } else {
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
+                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
                     skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
                 }
             }
         } else {
 
             if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                skillTextParts2.push(`♠Ocultar: ${ocultrarsalvaValue}<br><br>`);
+                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br>`);
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
-
+                skillTextParts2.push(`Visibilidade:: ${-ocultrarsalvaValue}<br><br>`);
             } else {
-                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br><br> `);
+                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
                 skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
             }
 
         }
@@ -704,18 +711,13 @@ function updateSkills() {
         // Função para criar botão e conteúdo oculto
 
         // Criar os botões
-        skillTextParts2.push(createActionButton('Empurrar', `
-            EfeitoemArea|Ocultar>${ocultrarsalvaValue}<br>
-            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg) (0|1|2|3)d<br>
-            Dano por d(${0 * 3 + 5}|${1 * 3 + 5}|${2 * 3 + 5}|${3 * 3 + 5})ED<br>
-            (${attributes.attr3}ED - Peso Alvo )d
-        `));
+
 
 
 
         skillTextParts2.push(createActionButton('Golpe', `${attributes.attr3} ED`));
         skillTextParts2.push(createActionButton('Toque', `Toque`));
-       
+
         skillTextParts2.push(createActionButton('Segurar', `
             ${attributes.attr3}ED (${2 ** (attributes.attr3)}Kg)<br>
             Força Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)
@@ -743,8 +745,7 @@ function updateSkills() {
                 " ": Pois não se dá dano apenas o efeito caido. E para desvios, contar como esse dano.
             `;
         }
-        if (attributes.attr3<2)
-        {
+        if (attributes.attr3 < 2) {
             skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
                 {
                     label: '🔶',
@@ -760,7 +761,7 @@ function updateSkills() {
                 }
             ]));
 
-        }else{
+        } else {
             skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
                 {
                     label: 'L',
@@ -782,11 +783,11 @@ function updateSkills() {
 
 
         }
-        
-        
+
+
         function gerarTextoArremesso(spaces) {
             let texttemp = '0'; // Inicializa com valor padrão
-        
+
             if (attributes.attr1 >= 1) {
                 texttemp = `${sensiValue + 1}`;
             } else if (attributes.attr1 < 0) {
@@ -798,7 +799,7 @@ function updateSkills() {
                 
                 •Altura máx Obj: 3d<br>
                 •Distancia máx horizontal Obj: 10d<br><br>
-                •Distancia máx de Acerto Alvo: <br>Menos Ocultar do alvo + ${texttemp}d
+                •Distancia máx de Acerto Alvo: <br>+ Visibilidade do alvo + ${texttemp}d
                 <br><br>
 
                 •Dano tanto no alvo quanto no obj. Segue como Dano de Queda<br>
@@ -812,7 +813,7 @@ function updateSkills() {
                 •Somar 3d e um dado extra por cada 1 Espaço superado (exceto Distancia máx de Acerto Alvo). O inverso numerico também pode.<br><br>
             `;
         }
-        
+
 
         if (attributes.attr3 <= 2) {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
@@ -833,7 +834,41 @@ function updateSkills() {
                 }
             ]));
         }
-        
+
+        function gerarTextoEmpurrar(spaces) {
+            return `
+            •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br>
+            •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
+            
+            •Distancia máx horizontal Obj: 1d<br><br>
+            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg) (0|1|2|3)d<br>
+            Dano por d(${0 * 3 + 5}|${1 * 3 + 5}|${2 * 3 + 5}|${3 * 3 + 5})ED<br>
+            (${attributes.attr3}ED - Peso Alvo )d
+            `;
+        }
+
+
+        if (attributes.attr3 <= 2) {
+            skillTextParts2.push(createMultipleActionButtons('Empurrar', [
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoEmpurrar(attributes.attr3 + 3)
+                }
+            ]));
+        } else {
+            skillTextParts2.push(createMultipleActionButtons('Empurrar', [
+                {
+                    label: '🔶',
+                    details: ggerarTextoEmpurrar(attributes.attr3)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoEmpurrar(attributes.attr3 + 3)
+                }
+            ]));
+        }
+
+
         // Organiza
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
