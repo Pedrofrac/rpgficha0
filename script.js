@@ -697,8 +697,8 @@ function updateSkills() {
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
         skillText += `<hr><b>`;
-        skillText += `<h1>Ações Simples</h1>`;
-
+        skillText += `<h2>Ações Simples 🔶</h2>`;
+        skillText += `<h2>Ações 🔷</h2>`;
         skillTextParts2 = [];
 
         // Função para criar botão e conteúdo oculto
@@ -735,12 +735,12 @@ function updateSkills() {
 
         function gerarTextoDerrubar(spaces) {
             return `
-                Espaço máx: ${spaces} (${2 ** spaces}Kg)<br>
+                Pesso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br>
                 "${mostrarValorED(6)}"<br><br>
                 Efeito caído<br>
                 Efeito em area se: Alvo Menor que ${pesoValue - ocultarValuePeso} Espaços<br><br>
 
-                " ": Pois não se dá dano apenas o efeito caido. E para desvios contar como esse dano.
+                " ": Pois não se dá dano apenas o efeito caido. E para desvios, contar como esse dano.
             `;
         }
         if (attributes.attr3<2)
@@ -756,7 +756,7 @@ function updateSkills() {
                 },
                 {
                     label: '🔶🔷',
-                    details: gerarTextoDerrubar(attributes.attr3 + 6)
+                    details: gerarTextoDerrubar(attributes.attr3 + 8)
                 }
             ]));
 
@@ -793,7 +793,8 @@ function updateSkills() {
                 texttemp = `-${sensiValue + 1}`;
             }
             return `
-                •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br><br>
+                •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br>
+                •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
                 
                 •Altura máx Obj: 3d<br>
                 •Distancia máx horizontal Obj: 10d<br><br>
@@ -806,7 +807,6 @@ function updateSkills() {
                 
                 •Efeito Caído: no Alvo e Obj<br><br>
                 •Dano a Inventario: (o mesmo de Efeito em area) Para Obj.<br><br>
-                •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
                 
 
                 •Somar 3d e um dado extra por cada 1 Espaço superado (exceto Distancia máx de Acerto Alvo). O inverso numerico também pode.<br><br>
