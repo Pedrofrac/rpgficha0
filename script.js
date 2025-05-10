@@ -162,10 +162,10 @@ function updateSkills() {
         dado = (valorereal * 10 - indice + 1) + 10;
 
         if (attributes.attr3 >= -2) {
-            return `Dano:  ${valorereal * 2} | Min: ${dado}d`;
+            return `Dano:  ${valorereal} | Min: ${dado}d`;
         } else {
 
-            return `Dano:  ${valorereal * 2} | Min: ${dado}d`;
+            return `Dano:  ${valorereal} | Min: ${dado}d`;
         }
     }
 
@@ -356,7 +356,7 @@ function updateSkills() {
     }
 
     if (atletismoValue >= 1 && attributes.attr7 >= 1) {
-        skillTextParts.push(`••Fator de Experiencia: ${mostrarValorED(attributes.attr7 + 1)}<br>`);
+        skillTextParts.push(`••Fator de Experi: ${mostrarValorED(attributes.attr7 + 1)}<br>`);
     }
 
     if (true) {
@@ -492,13 +492,12 @@ function updateSkills() {
     }
 
     if ((attributes.attr3 >= 0)) {
-        skillTextParts.push(`Impacto:(${(attributes.attr3 + 3)}) ${mostrarValorED(attributes.attr3 + 3)}<br>`);
-        skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg)<br>
+
+        skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg) ${mostrarValorED(attributes.attr3 + 3)}<br>
     `);
 
     } if ((attributes.attr3 < 0)) {
-        skillTextParts.push(`Impacto:(${(attributes.attr3 + 3)}) ${mostrarValorED(attributes.attr3 + 3)}<br>`);
-        skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg)<br>
+        skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg) ${mostrarValorED(attributes.attr3 + 3)}<br>
         `);
     }
 
@@ -534,19 +533,6 @@ function updateSkills() {
         skillText += `<hr>`;
 
         let skillTextParts2 = [];
-        if (attributes.attr3 >= 0) {
-            skillTextParts2.push(createActionButton('Dano ',
-                `Impacto: (${attributes.attr3 + 3}) ${mostrarValorED(attributes.attr3 + 3)}<br>` +
-                `Tóxico: (${(attributes.attr3 * 3) + 3}) ${mostrarValorED((attributes.attr3 * 3) + 3)}<br>` +
-                `Cortante: (${(attributes.attr3 * 4) + 3}) ${mostrarValorED((attributes.attr3 * 4) + 3)}<br>` +
-                `Corrosivo: (${(attributes.attr3 * 2) + 3}) ${mostrarValorED((attributes.attr3 * 2) + 3)}<br>`
-            ));
-        } else {
-            skillTextParts2.push(createActionButton('Dano Atributo 3',
-                `${mostrarValorED(attributes.attr3 + 3)}<br>`
-            ));
-        }
-
 
         if ((attributes.attr4 >= 1)) {
             skillTextParts2.push(`•Fé: +${attributes.attr4} <br>
@@ -588,6 +574,8 @@ function updateSkills() {
         Dano max: Espaços +10 <= altura. <br>Em alvos<br><br>
 
         Lesão aleatoria vinda desse dano.<br><br>
+
+        •Dano a Inventario: (o mesmo de Efeito em area) Para Obj e alvos afetados.<br><br>
         
         Defesa e Desvio nesse caso só bloqueará até dois dados no maximo.<br><br>
         Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
@@ -610,7 +598,8 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
-            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br> `);
+            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br><br> `);
+            skillTextParts2.push(`•Efeito em Area seram aplicados em alvos memores que o Peso ${pesoValue - ocultarValuePeso} (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br> `);
 
         } else {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
@@ -715,7 +704,9 @@ function updateSkills() {
 
 
 
-        skillTextParts2.push(createActionButton('Golpe', `${attributes.attr3} ED`));
+
+
+
         skillTextParts2.push(createActionButton('Toque', `Toque`));
 
         skillTextParts2.push(createActionButton('Segurar', `
@@ -737,13 +728,8 @@ function updateSkills() {
 
         function gerarTextoDerrubar(spaces) {
             return `
-                Pesso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br>
-                "${mostrarValorED(6)}"<br><br>
-                Efeito caído<br>
-                Efeito em area se: Alvo Menor que ${pesoValue - ocultarValuePeso} Espaços<br><br>
-
-                " ": Pois não se dá dano apenas o efeito caido. E para desvios, contar como esse dano.
-            `;
+                •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
+                `;
         }
         if (attributes.attr3 < 2) {
             skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
@@ -794,26 +780,65 @@ function updateSkills() {
                 texttemp = `-${sensiValue + 1}`;
             }
             return `
-                •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br>
-                •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
+                •Peso|Espaço Alvo máx:  ${spaces}  (${2 ** spaces}Kg)<br><br>
                 
-                •Altura máx Obj: 3d<br>
+                •Altura máx Obj: 3d<br><br>
+
                 •Distancia máx horizontal Obj: 10d<br><br>
-                •Distancia máx de Acerto Alvo: <br>+ Visibilidade do alvo + ${texttemp}d
-                <br><br>
-
-                •Dano tanto no alvo quanto no obj. Segue como Dano de Queda<br>
-                Dano max: 3d10 ${mostrarValorED(2)}<br>
-                Dano mín: 1d10 ${mostrarValorED(2)}<br><br>
-                
-                •Efeito Caído: no Alvo e Obj<br><br>
-                •Dano a Inventario: (o mesmo de Efeito em area) Para Obj.<br><br>
-                
-
-                •Somar 3d e um dado extra por cada 1 Espaço superado (exceto Distancia máx de Acerto Alvo). O inverso numerico também pode.<br><br>
             `;
         }
+        
+        function gerarTextoGolpe(spaces) {
+           
+            return `
+                Impacto: (${spaces + 3}) ${mostrarValorED(spaces + 3)}<br>
+                Tóxico: (${(spaces * 3) + 3}) ${mostrarValorED((spaces * 3) + 3)}<br>
+                Cortante: (${(spaces * 4) + 3}) ${mostrarValorED((spaces * 4) + 3)}<br>
+                Corrosivo: (${(spaces * 2) + 3}) ${mostrarValorED((spaces * 2) + 3)}<br>
+            `;
+        }
+        
+        
+        
+        
+        
+        if (attributes.attr3 <= 2) {
+            skillTextParts2.push(createMultipleActionButtons('Golpe ou Dano', [
+                {
+                    label: '🔷',
+                    details: gerarTextoGolpe(attributes.attr3)
+                }
+            ]));
 
+        }else{
+            skillTextParts2.push(createMultipleActionButtons('Golpe', [
+                {
+                    label: '🔶',
+                    details: gerarTextoGolpe(attributes.attr3-3)
+                },
+                {
+                    label: '🔷',
+                    details: gerarTextoGolpe(attributes.attr3)
+                }
+            ]));
+
+        }
+
+
+
+        skillTextParts2.push(createActionButton('••Efeito de Força', `•Dano Efeito de Força: Segue como Dano de Queda numericamente igual a 
+                altura MAx (se n houver, distancia horizontal Max) 
+                do deslocamento tanto para obj quanto para alvos afetados.<br>
+                <br>
+
+                Dano min Efeito de Força: Considere Dano de queda 1d.<br><br>
+
+                •Acerto: Se passar em um dos dois dados o Efeito pega <br><br>
+                •Efeito caido sempre irá acontecer caso os Alvos sofram um acerto de: Derrubar Trombar, Empurrar, Puxar e Arremessar (nesse caso o obj arremesado).<br><br>
+            
+
+                •Somar 3d por cada 1 Espaço Max superado. O inverso numerico também pode.<br><br>
+            `));
 
         if (attributes.attr3 <= 2) {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
@@ -837,36 +862,25 @@ function updateSkills() {
 
         function gerarTextoEmpurrar(spaces) {
             return `
-            •Espaços Max Obj:  ${spaces}  (${2 ** spaces}Kg)<br>
-            •Efeito em area para Alvo apenas se: Alvo Menor que ${spaces} Espaços Max Obj<br><br>
-            
+            •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
+        
             •Distancia máx horizontal Obj: 1d<br><br>
-            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg) (0|1|2|3)d<br>
-            Dano por d(${0 * 3 + 5}|${1 * 3 + 5}|${2 * 3 + 5}|${3 * 3 + 5})ED<br>
-            (${attributes.attr3}ED - Peso Alvo )d
             `;
         }
 
 
-        if (attributes.attr3 <= 2) {
-            skillTextParts2.push(createMultipleActionButtons('Empurrar', [
-                {
-                    label: '🔶🔷',
-                    details: gerarTextoEmpurrar(attributes.attr3 + 3)
-                }
-            ]));
-        } else {
-            skillTextParts2.push(createMultipleActionButtons('Empurrar', [
-                {
-                    label: '🔶',
-                    details: ggerarTextoEmpurrar(attributes.attr3)
-                },
-                {
-                    label: '🔶🔷',
-                    details: gerarTextoEmpurrar(attributes.attr3 + 3)
-                }
-            ]));
-        }
+
+        skillTextParts2.push(createMultipleActionButtons('Empurrar', [
+            {
+                label: '🔶',
+                details: gerarTextoEmpurrar(attributes.attr3 + 2)
+            },
+            {
+                label: '🔶🔷',
+                details: gerarTextoEmpurrar(attributes.attr3 + 5)
+            }
+        ]));
+
 
 
         // Organiza
