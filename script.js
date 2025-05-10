@@ -10,6 +10,13 @@ let attributes = {
     attr8: 0,
 };
 
+let tipodano = {
+    attr1: 1,
+    attr2: 0,
+    attr3: 0,
+    attr4: 0,
+};
+
 function createMultipleActionButtons(actionName, buttons) {
     const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
 
@@ -64,6 +71,47 @@ function createMultipleActionButtons(actionName, buttons) {
     </div>
     `;
 }
+
+function createMultipleActionButtonsComEstado(actionName, buttons, tipodano) {
+    const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
+
+    const buttonHtml = buttons.map(({ label, attr, texto }, i) => {
+        const id = `${groupId}_details_${i}`;
+        const isActive = tipodano[attr] === 1;
+        return `
+            <button "
+            onclick="
+                tipodano.${attr} = tipodano.${attr} === 1 ? 0 : 1;
+                const detailDiv = document.getElementById('${id}');
+                const isActive = tipodano.${attr} === 1;
+                detailDiv.style.display = isActive ? 'block' : 'none';
+                detailDiv.innerText = isActive ? '${texto}' : '';
+                if (typeof updateSkills === 'function') updateSkills();
+            ">
+                ${label}
+            </button>
+            <div id="${id}" data-group="${groupId}" data-attr="${attr}" data-texto="${texto}" style="display:${isActive ? 'block' : 'none'}; margin-top:5px;">
+                ${isActive ? texto : ''}
+            </div>
+        `;
+    });
+
+    const buttonsOnly = buttonHtml.map(b => b.split('</button>')[0] + '</button>').join('');
+    const detailsOnly = buttonHtml.map(b => b.split('</button>')[1]).join('');
+
+    return `
+    <div style="margin-bottom:5px;">
+        <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+            <span><b>${actionName}</b></span>
+            ${buttonsOnly}
+        </div>
+        <div style="margin-left:20px;">
+            ${detailsOnly}
+        </div>
+    </div>
+    `;
+}
+
 
 
 
@@ -125,22 +173,6 @@ function conta(num, vet) {
 function updateSkills() {
     // Define manualmente os valores das perícias com quebras de linha
 
-
-
-
-    let numeros = [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2,
-        3, 3, 3, 3,
-        4, 4, 4,
-        5, 5,
-        6, 6,
-        7, 7,
-        8, 8,
-        9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
-    ];
-
     let negativosAntigos = {};
 
     for (let key in attributes) {
@@ -155,17 +187,28 @@ function updateSkills() {
         return Math.round((indice10 / 5) * 100) / 100;
     }
 
+    function mostrarValorEDFor(indice) {
+        valorereal = Math.floor((indice - 1) / 10);
 
+        dado = (valorereal * 10 - indice + 1) + 10;
+
+        if (indice >= 1) {
+            return `Min: ${dado}d`;
+        } else {
+
+            return `Min: 10d`;
+        }
+    }
     function mostrarValorED(indice) {
         valorereal = Math.floor((indice - 1) / 10);
 
         dado = (valorereal * 10 - indice + 1) + 10;
 
-        if (attributes.attr3 >= -2) {
+        if (indice >= 1) {
             return `Dano:  ${valorereal} | Min: ${dado}d`;
         } else {
 
-            return `Dano:  ${valorereal} | Min: ${dado}d`;
+            return `Dano:  0 | Min: 10d`;
         }
     }
 
@@ -214,6 +257,71 @@ function updateSkills() {
         }
 
     }
+    function gerarTextoGolpeFiltrado(tipodano, spaces) {
+        let texto = "";
+
+        if (tipodano.attr1 === 1) {
+            texto += `Impacto: (${spaces + 3}) ${mostrarValorED(spaces + 3)}<br>`;
+        } else {
+            if (attributes.attr3 <= 2) {
+                if (spaces >= 0) {
+                    texto += `Impacto: (${3}) ${mostrarValorED(3)}<br>`;
+                } else {
+                    texto += `Impacto: (${1}) ${mostrarValorED(1)}<br>`;
+                }
+            } else {
+                if (spaces >= 3) {
+                    texto += `Impacto: (${3}) ${mostrarValorED(3)}<br>`;
+                } else {
+                    texto += `Impacto: (${1}) ${mostrarValorED(1)}<br>`;
+                }
+
+            }
+
+        }
+
+        if (tipodano.attr4 === 1) {
+            if (spaces >= 0) {
+                texto += `Tóxico: (${(spaces * 3) + 3}) ${mostrarValorED((spaces * 3) + 3)}<br>`;
+            } else {
+                texto += `Tóxico: (${1}) ${mostrarValorED(1)}<br>`;
+            }
+
+        }
+
+        if (tipodano.attr2 === 1) {
+            if (spaces >= 0) {
+                texto += `Perfurante: (${(spaces * 4) + 3}) ${mostrarValorED((spaces * 4) + 3)}<br>`;
+            } else {
+                texto += `Perfurante: (${1}) ${mostrarValorED(1)}<br>`;
+            }
+        }
+        if (tipodano.attr3 === 1) {
+            if (spaces >= 0) {
+                texto += `Corrosivo: (${(spaces * 2) + 3}) ${mostrarValorED((spaces * 2) + 3)}<br>`;
+            } else {
+                texto += `Corrosivo: (${1}) ${mostrarValorED(1)}<br>`;
+            }
+        }
+
+        return texto || "Nenhum tipo de dano selecionado.";
+
+    }
+
+    function adicionarGolpeOuDano(skillTextParts2, tipodano, attributes) {
+        const spacesBase = attributes.attr3 <= 0 ? attributes.attr3 - 2 : attributes.attr3 - 3;
+
+        skillTextParts2.push(createMultipleActionButtons('Golpe ou Dano', [
+            {
+                label: '🔶',
+                details: gerarTextoGolpeFiltrado(tipodano, spacesBase)
+            },
+            {
+                label: '🔷',
+                details: gerarTextoGolpeFiltrado(tipodano, attributes.attr3)
+            }
+        ]));
+    }
 
     // Verifica a condição de Defesa e adiciona à skillText se a condição for atendida
     defenseValue = attributes.attr3;
@@ -224,7 +332,13 @@ function updateSkills() {
     // espada e paus
     vontadeValue = attributes.attr1 > 1 && attributes.attr2 > 1 ? (attributes.attr1 * attributes.attr2) + 3 : (attributes.attr1 + attributes.attr2);
     sensopercepcaoValue = attributes.attr1 * attributes.attr5 >= 4 ? attributes.attr1 * attributes.attr5 : attributes.attr5 >= 1 ? attributes.attr1 : 0;
-    forcaValue = attributes.attr3 > attributes.attr7 ? attributes.attr3 : attributes.attr7;
+
+    if (tipodano.attr1 == 1) {
+        forcaValue = attributes.attr3 > attributes.attr7 ? attributes.attr3 : attributes.attr7;
+    } else {
+        forcaValue = 0;
+    }
+
     percepcaoValue = (attributes.attr4 >= 3 ? ((attributes.attr4 - 1) * 2 + 1) : attributes.attr4 == 1 ? - 2 : attributes.attr4);
     sensiValue = (attributes.attr1 >= 3 ? ((attributes.attr1) * 3 - 3) : attributes.attr1 == 1 ? 0 : attributes.attr1 + 1);
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3;
@@ -266,16 +380,24 @@ function updateSkills() {
     for (let key in negativosAntigos) {
         attributes[key] = negativosAntigos[key];
     }
-    ocultarValue = ocultarValue + (attributes.attr3 > 2 ? -attributes.attr3 + 2 : 0);
+
     velocidadeValue = (+ attributes.attr3 + attributes.attr4) * 2;
 
+    if (tipodano.attr1 == 1) {
+        pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
+        visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
+        ocultarValue = ocultarValue + (attributes.attr3 > 2 ? -attributes.attr3 + 2 : 0);
+        inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
+    } else {
+        pesoValue = 6;
+        visibilidadeValue = 0;
+        inventarioValue = 3;
+    }
 
-    pesoValue = (attributes.attr3 < 0 ? attributes.attr3 + 6 : forcaValue == 0 ? 6 : Math.floor((((forcaValue - 1) / 3) + 6)));
-    inventarioValue = (attributes.attr3 == 0 ? 3 : attributes.attr3 == 1 ? 5 : attributes.attr3 >= 2 ? 10 + (5 * (attributes.attr3 - 2)) : 1);
     ocultarValuePeso = (attributes.attr2 >= 0 ? Math.floor(attributes.attr2 / 3) : attributes.attr2);
 
 
-    visibilidadeValue = (attributes.attr3 >= 0 ? pesoValue - 6 : attributes.attr3);
+
 
 
 
@@ -319,6 +441,11 @@ function updateSkills() {
 
 
     }
+    spaces2 = attributes.attr3 <= 0 ? attributes.attr3 - 2 : attributes.attr3 - 3;
+    skillTextParts.push(`🔷${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}<br>  
+    `);
+    skillTextParts.push(`🔶${gerarTextoGolpeFiltrado(tipodano, spaces2)}<br> 
+    `);
 
 
     if (vontadeValue >= 1 && attributes.attr1 >= 1 && attributes.attr2 >= 1) {
@@ -360,12 +487,12 @@ function updateSkills() {
     }
 
     if (true) {
-        skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br>
+        skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br><br>
     `);
     }
     if (desvioValue + visibilidadeValue > 0) {
         if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
-            skillTextParts.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + attributes.attr3)}<br>
+            skillTextParts.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue)}<br>
                 `);
         } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
             skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
@@ -490,16 +617,22 @@ function updateSkills() {
             `);
         ocultrarsalvaValue = -1 + ocultarValue + ocultarbonusValue;
     }
+    if (tipodano.attr1 == 1) {
+        if ((attributes.attr3 >= 0)) {
 
-    if ((attributes.attr3 >= 0)) {
-
-        skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg) ${mostrarValorED(attributes.attr3 + 3)}<br>
+            skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg) ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
     `);
 
-    } if ((attributes.attr3 < 0)) {
-        skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg) ${mostrarValorED(attributes.attr3 + 3)}<br>
+        } if ((attributes.attr3 < 0)) {
+            skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg) ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
         `);
+        }
+    } else {
+        skillTextParts.push(`Força: ${(+ 3)} (${2 ** (3)}Kg) ${mostrarValorEDFor(3)}<br>
+    `);
+
     }
+
 
     if ((attributes.attr6 >= 1)) {
         skillTextParts.push(`Sorte: +${sorteValue}<br>
@@ -598,14 +731,14 @@ function updateSkills() {
             skillTextParts2.push(`Inventário: ${inventarioValue} (10max para item>=0)<br>`);
             skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
-            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br><br> `);
+            skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
             skillTextParts2.push(`•Efeito em Area seram aplicados em alvos memores que o Peso ${pesoValue - ocultarValuePeso} (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br> `);
 
         } else {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
-            skillTextParts2.push(`Peso: ${pesoValue}ED ${2 ** (pesoValue)}Kg <br>`);
+            skillTextParts2.push(`Peso: ${pesoValue} Espaços ${2 ** (pesoValue)}Kg <br>`);
             skillTextParts2.push(`Alcance Fizico: ${attributes.attr3 == -1 ? 1 : 0}d<br> `);
-            skillTextParts2.push(`Visibilidade: ${ocultrarsalvaValue}<br> `);
+            skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br> `);
         }
         if ((attributes.attr3 < 0 && attributes.attr4 < 0)) {
             skillTextParts2.push(`<hr>••Dbuff Dano: ${mostrarValorEDvelocidadedeataque(-velocidadebonusValue)}
@@ -665,6 +798,37 @@ function updateSkills() {
 
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
+
+
+        skillText += `<hr>`;
+        skillText += `<h1>Inf de Dano</h1>`;
+
+
+        skillTextParts2 = [];
+
+
+        skillTextParts2.push(createMultipleActionButtonsComEstado('Impacto', [
+            { label: '', attr: 'attr1', texto: 'Ser possui Força: Impacto' }
+        ], tipodano));
+
+        skillTextParts2.push(createMultipleActionButtonsComEstado('Perfuração', [
+            { label: '', attr: 'attr2', texto: 'Ser possui Força: Perfuração' }
+        ], tipodano));
+
+        skillTextParts2.push(createMultipleActionButtonsComEstado('Corrosivo', [
+            { label: '', attr: 'attr3', texto: 'Ser possui Força: Corrosão' }
+        ], tipodano));
+
+        skillTextParts2.push(createMultipleActionButtonsComEstado('Tóxico', [
+            { label: '', attr: 'attr4', texto: 'Ser possui Força: Tóxico' }
+        ], tipodano));
+
+
+
+        skillTextParts2.sort();
+        skillText += skillTextParts2.join("");
+
+
         skillText += `</b>`;
 
 
@@ -787,42 +951,12 @@ function updateSkills() {
                 •Distancia máx horizontal Obj: 10d<br><br>
             `;
         }
-        
-        function gerarTextoGolpe(spaces) {
-           
-            return `
-                Impacto: (${spaces + 3}) ${mostrarValorED(spaces + 3)}<br>
-                Tóxico: (${(spaces * 3) + 3}) ${mostrarValorED((spaces * 3) + 3)}<br>
-                Cortante: (${(spaces * 4) + 3}) ${mostrarValorED((spaces * 4) + 3)}<br>
-                Corrosivo: (${(spaces * 2) + 3}) ${mostrarValorED((spaces * 2) + 3)}<br>
-            `;
-        }
-        
-        
-        
-        
-        
-        if (attributes.attr3 <= 2) {
-            skillTextParts2.push(createMultipleActionButtons('Golpe ou Dano', [
-                {
-                    label: '🔷',
-                    details: gerarTextoGolpe(attributes.attr3)
-                }
-            ]));
 
-        }else{
-            skillTextParts2.push(createMultipleActionButtons('Golpe', [
-                {
-                    label: '🔶',
-                    details: gerarTextoGolpe(attributes.attr3-3)
-                },
-                {
-                    label: '🔷',
-                    details: gerarTextoGolpe(attributes.attr3)
-                }
-            ]));
 
-        }
+
+
+
+        adicionarGolpeOuDano(skillTextParts2, tipodano, attributes);
 
 
 
