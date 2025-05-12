@@ -193,10 +193,10 @@ function updateSkills() {
         dado = (valorereal * 10 - indice + 1) + 10;
 
         if (indice >= 1) {
-            return `Min: ${dado}d`;
+            return `Min ${dado}d`;
         } else {
 
-            return `Min: 10d`;
+            return `Min 10d`;
         }
     }
     function mostrarValorED(indice) {
@@ -205,10 +205,10 @@ function updateSkills() {
         dado = (valorereal * 10 - indice + 1) + 10;
 
         if (indice >= 1) {
-            return `Dano:  ${valorereal} | Min: ${dado}d`;
+            return `Dano:  ${valorereal} | Min ${dado}d`;
         } else {
 
-            return `Dano:  0 | Min: 10d`;
+            return `Dano:  0 | Min 10d`;
         }
     }
 
@@ -219,6 +219,15 @@ function updateSkills() {
             return ` ${-indice2 + 10}d >= Dano dobrado`;
         }
     }
+
+    function mostrarValorEDperc(indice2) {
+        if (indice2 > 0) {
+            return ` ${-indice2 + 10}d >= Bloqueia o dano `;
+        } else {
+            return ` ${indice2 + 10}d >= Dano dobrado`;
+        }
+    }
+    
 
 
     function mostrarValorEDdesvio(indice5) {
@@ -257,6 +266,16 @@ function updateSkills() {
         }
 
     }
+    
+    function mostrarValorEDocultar(indice3) {
+        if (indice3 >= 0) {
+            return `${indice3}d de Vantagem`;
+        } else {
+            return `${-indice3}d de Desvantagem`;
+        }
+
+    }
+
     function gerarTextoGolpeFiltrado(tipodano, spaces) {
         let texto = "";
 
@@ -344,6 +363,7 @@ function updateSkills() {
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3;
     atletismoValue = ((attributes.attr3 * attributes.attr7) >= 1 ? (attributes.attr3) * attributes.attr7 + 3 : attributes.attr3 == 0 ? 0 : attributes.attr3 * 2);
 
+    
 
     controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1);
     conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1);
@@ -373,7 +393,7 @@ function updateSkills() {
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (${mostrarValorEDvelocidadedeataque(attr6)})` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (${mostrarValorEDvelocidadedeataque(attr5)})` : ""));
     ocultrarsalvaValue = 0;
 
-
+    
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
@@ -396,7 +416,7 @@ function updateSkills() {
 
     ocultarValuePeso = (attributes.attr2 >= 0 ? Math.floor(attributes.attr2 / 3) : attributes.attr2);
 
-
+    defpercepcaoValeu=attributes.attr4*2-1;
 
 
 
@@ -444,7 +464,7 @@ function updateSkills() {
     spaces2 = attributes.attr3 <= 0 ? attributes.attr3 - 2 : attributes.attr3 - 3;
     skillTextParts.push(`🔷${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}<br>  
     `);
-    skillTextParts.push(`🔶${gerarTextoGolpeFiltrado(tipodano, spaces2)}<br> 
+    skillTextParts.push(`🔶${gerarTextoGolpeFiltrado(tipodano, spaces2)}
     `);
 
 
@@ -459,10 +479,10 @@ function updateSkills() {
 
 
     if (attributes.attr4 >= 1) {
-        skillTextParts.push(`Percepção: +${percepcaoValue + 4}<br>
+        skillTextParts.push(`Percepção: (+${percepcaoValue + 4}) ${mostrarValorEDperc(defpercepcaoValeu)}<br>
     `);
     } if (attributes.attr4 < 0) {
-        skillTextParts.push(`Percepção: ${-percepcaoValue - 4}<br>
+        skillTextParts.push(`Percepção: (${-percepcaoValue - 4}) ${mostrarValorEDperc(defpercepcaoValeu)}<br>
     `);
     }
 
@@ -487,7 +507,7 @@ function updateSkills() {
     }
 
     if (true) {
-        skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br><br>
+        skillTextParts.push(`••Pontos de Habilidades: +${attributes.attr7 + 1}<br>
     `);
     }
     if (desvioValue + visibilidadeValue > 0) {
@@ -600,35 +620,44 @@ function updateSkills() {
 
     if ((attributes.attr2 >= 1)) {
         if (ocultarValue + ocultarbonusValue > 0) {
-            skillTextParts.push(`Ocultar: +${ocultarValue + ocultarbonusValue} <br>
+            skillTextParts.push(`Ocultar: (+${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue)/2))} <br>
                 `);
         } else {
 
-            skillTextParts.push(`Ocultar: ${ocultarValue + ocultarbonusValue} <br>
+            skillTextParts.push(`Ocultar: (${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue)/2))} <br>
                 `);
         }
         ocultrarsalvaValue = ocultarValue + ocultarbonusValue;
     } else if ((attributes.attr2 < 0)) {
-        skillTextParts.push(`Ocultar: ${-ocultarValue + ocultarbonusValue} <br>
+        skillTextParts.push(`Ocultar:(${-ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-ocultarValue + ocultarbonusValue)/2))} <br>
     `);
         ocultrarsalvaValue = -ocultarValue + ocultarbonusValue;
     } else if (-1 + ocultarValue + ocultarbonusValue != 0) {
-        skillTextParts.push(`Ocultar: ${-1 + ocultarValue + ocultarbonusValue} <br>
+        skillTextParts.push(`Ocultar: (${-1 + ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-1+ocultarValue + ocultarbonusValue)/2))} <br>
             `);
         ocultrarsalvaValue = -1 + ocultarValue + ocultarbonusValue;
     }
+
+
     if (tipodano.attr1 == 1) {
         if ((attributes.attr3 >= 0)) {
 
-            skillTextParts.push(`Força: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg) ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
+            skillTextParts.push(`Empunhadura: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg)<br>
+    `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
+    
+    `); skillTextParts.push(`🔶Empunhadura: ${(forcaValue)} (${2 ** (forcaValue)}Kg)<br>
     `);
 
         } if ((attributes.attr3 < 0)) {
-            skillTextParts.push(`Força: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg) ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
-        `);
+
+            skillTextParts.push(`Empunhadura: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg)<br>
+    `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
+    `);
         }
     } else {
-        skillTextParts.push(`Força: ${(+ 3)} (${2 ** (3)}Kg) ${mostrarValorEDFor(3)}<br>
+        skillTextParts.push(`Empunhadura: ${(+ 3)} (${2 ** (+ 3)}Kg)<br>
+    `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(+ 3)}<br>
+    `); skillTextParts.push(`🔶Empunhadura: ${(forcaValue)} (${2 ** (forcaValue)}Kg)<br>
     `);
 
     }
@@ -865,7 +894,11 @@ function updateSkills() {
 
         // Criar os botões
 
-
+        if (tipodano.attr1 == 1) {
+            forcaimp = attributes.attr3;
+        } else {
+            forcaimp = 0;
+        }
 
 
 
@@ -874,19 +907,15 @@ function updateSkills() {
         skillTextParts2.push(createActionButton('Toque', `Toque`));
 
         skillTextParts2.push(createActionButton('Segurar', `
-            ${attributes.attr3}ED (${2 ** (attributes.attr3)}Kg)<br>
-            Força Alvo max ${attributes.attr3 + 2}ED (${2 ** (attributes.attr3 + 2)}Kg)
+            ${forcaimp}ED (${2 ** (forcaimp)}Kg)<br>
+            Força Alvo max ${forcaimp + 2}ED (${2 ** (forcaimp + 2)}Kg)
         `));
         skillTextParts2.push(createActionButton('Puxar', `
             Apenas Horizontal<br>
-            ${attributes.attr3 + 2} ED (${2 ** (attributes.attr3 + 2)}Kg)<br>
+            ${forcaimp + 2} ED (${2 ** (forcaimp + 2)}Kg)<br>
             Evento -5 Saude ou impacto<br>
             Combate -1/t Saude ou impacto<br>
             - Saúde|imp para alvo apenas
-        `));
-        skillTextParts2.push(createActionButton('Levantar|Empunhar', `
-            ${attributes.attr3} ED (${2 ** (attributes.attr3)}Kg)<br>
-            Limite 2 Braços
         `));
 
 
@@ -895,19 +924,19 @@ function updateSkills() {
                 •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
                 `;
         }
-        if (attributes.attr3 < 2) {
+        if (forcaimp < 2) {
             skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
                 {
                     label: '🔶',
-                    details: gerarTextoDerrubar(attributes.attr3)
+                    details: gerarTextoDerrubar(forcaimp)
                 },
                 {
                     label: '🔷',
-                    details: gerarTextoDerrubar(attributes.attr3 + 3)
+                    details: gerarTextoDerrubar(forcaimp + 3)
                 },
                 {
                     label: '🔶🔷',
-                    details: gerarTextoDerrubar(attributes.attr3 + 8)
+                    details: gerarTextoDerrubar(forcaimp + 8)
                 }
             ]));
 
@@ -915,19 +944,19 @@ function updateSkills() {
             skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
                 {
                     label: 'L',
-                    details: gerarTextoDerrubar(attributes.attr3 - 2)
+                    details: gerarTextoDerrubar(forcaimp - 2)
                 },
                 {
                     label: '🔶',
-                    details: gerarTextoDerrubar(attributes.attr3)
+                    details: gerarTextoDerrubar(forcaimp)
                 },
                 {
                     label: '🔷',
-                    details: gerarTextoDerrubar(attributes.attr3 + 3)
+                    details: gerarTextoDerrubar(forcaimp + 3)
                 },
                 {
                     label: '🔶🔷',
-                    details: gerarTextoDerrubar(attributes.attr3 + 6)
+                    details: gerarTextoDerrubar(forcaimp + 6)
                 }
             ]));
 
@@ -974,22 +1003,22 @@ function updateSkills() {
                 •Somar 3d por cada 1 Espaço Max superado. O inverso numerico também pode.<br><br>
             `));
 
-        if (attributes.attr3 <= 2) {
+        if (forcaimp <= 2) {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
                 {
                     label: '🔶🔷',
-                    details: gerarTextoArremesso(attributes.attr3)
+                    details: gerarTextoArremesso(forcaimp)
                 }
             ]));
         } else {
             skillTextParts2.push(createMultipleActionButtons('Arremessar', [
                 {
                     label: '🔶',
-                    details: gerarTextoArremesso(attributes.attr3 - 3)
+                    details: gerarTextoArremesso(forcaimp - 3)
                 },
                 {
                     label: '🔶🔷',
-                    details: gerarTextoArremesso(attributes.attr3)
+                    details: gerarTextoArremesso(forcaimp)
                 }
             ]));
         }
@@ -1002,19 +1031,39 @@ function updateSkills() {
             `;
         }
 
+        function gerarTextoEmpunhar(spaces) {
+            return `
+            •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
+        
+            •Limite 2 (2 braços)<br><br>
+            `;
+        }
+
+
 
 
         skillTextParts2.push(createMultipleActionButtons('Empurrar', [
             {
                 label: '🔶',
-                details: gerarTextoEmpurrar(attributes.attr3 + 2)
+                details: gerarTextoEmpurrar(forcaimp + 2)
             },
             {
                 label: '🔶🔷',
-                details: gerarTextoEmpurrar(attributes.attr3 + 5)
+                details: gerarTextoEmpurrar(forcaimp + 5)
             }
         ]));
 
+
+        skillTextParts2.push(createMultipleActionButtons('Empunhar', [
+            {
+                label: '🔶',
+                details: gerarTextoEmpunhar(forcaimp)
+            },
+            {
+                label: '🔶🔷',
+                details: gerarTextoEmpunhar(forcaimp + 3)
+            }
+        ]));
 
 
         // Organiza
