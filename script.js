@@ -17,6 +17,60 @@ let tipodano = {
     attr4: 0,
 };
 
+let titulo = {
+    attr1: 0,
+    attr2: 0,
+    attr3: 0,
+    attr4: 0,
+    attr5: 0,
+    attr6: 0,
+    attr7: 0,
+    attr8: 0,
+};
+
+function createTituloComEstado(actionName, buttons, titulo) {
+    const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
+
+    const buttonHtml = buttons.map(({ label, attr, texto }, i) => {
+        const id = `${groupId}_details_${i}`;
+        const isActive = titulo[attr] === 1;
+        return `
+            <button
+                onclick="
+                    titulo.${attr} = titulo.${attr} === 1 ? 0 : 1;
+                    const detailDiv = document.getElementById('${id}');
+                    const isActive = titulo.${attr} === 1;
+                    detailDiv.style.display = isActive ? 'block' : 'none';
+                    detailDiv.innerText = isActive ? '${texto}' : '';
+                    if (typeof updateSkills === 'function') updateSkills();
+                "
+                style="font-weight: bold; font-size: 18px; padding: 5px 10px;"
+            >
+                ${label}
+            </button>
+            <div id="${id}" data-group="${groupId}" data-attr="${attr}" data-texto="${texto}" style="display:${isActive ? 'block' : 'none'}; margin-top:5px; font-size: 16px;">
+                ${isActive ? texto : ''}
+            </div>
+        `;
+    });
+
+    const buttonsOnly = buttonHtml.map(b => b.split('</button>')[0] + '</button>').join('');
+    const detailsOnly = buttonHtml.map(b => b.split('</button>')[1]).join('');
+
+    return `
+    <div style="margin-bottom:10px;">
+        <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+            <span style="font-size: 30px;"><b>${actionName}</b></span>
+            ${buttonsOnly}
+        </div>
+        <div style="margin-left:20px;">
+            ${detailsOnly}
+        </div>
+    </div>
+    `;
+}
+
+
 function createMultipleActionButtons(actionName, buttons) {
     const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
 
@@ -761,7 +815,7 @@ function updateSkills() {
             skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
             skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-            skillTextParts2.push(`•Efeito em Area seram aplicados em alvos memores que o Peso ${pesoValue - ocultarValuePeso} (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br> `);
+            skillTextParts2.push(`•Efeito em Area seram aplicados em alvos menores igual que o Peso ${pesoValue - ocultarValuePeso-1} (${2 ** (pesoValue - ocultarValuePeso-1)}Kg) <br> `);
 
         } else {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
@@ -780,81 +834,98 @@ function updateSkills() {
         skillTextParts2.sort();
         skillText += skillTextParts2.join("");
         skillText += `<hr>`;
-        skillText += `<h1>Inf de Items</h1>`;
 
 
         skillTextParts2 = [];
 
-        if (attributes.attr3 >= 0) {
+        skillTextParts2.push(createTituloComEstado('Inf de Items', [
+            { label: '', attr: 'attr5', texto: '' }
+        ], titulo));
+
+        if (titulo.attr5 == 1) {
+
+            if (attributes.attr3 >= 0) {
 
 
-            if (attributes.attr2 == 0 && ocultarValue == 1 && ocultarbonusValue == 0) {
-                skillTextParts2.push(`Ocultar: 0<br> `);
-                skillTextParts2.push(`Visibilidade: 0<br><br> `);
-                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
+                if (attributes.attr2 == 0 && ocultarValue == 1 && ocultarbonusValue == 0) {
+                    skillTextParts2.push(`Ocultar: 0<br> `);
+                    skillTextParts2.push(`Visibilidade: 0<br><br> `);
+                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
 
+                } else {
+                    if (attributes.attr3 > 2 && attributes.attr2 == 0) {
+                        skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
+                        skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
+                        skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                    } else {
+                        skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
+                        skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
+                        skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                    }
+                }
             } else {
+
                 if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br>`);
+                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
+                    skillTextParts2.push(`Visibilidade:: ${-ocultrarsalvaValue}<br><br>`);
                 } else {
                     skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
                     skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
+                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
                 }
-            }
-        } else {
 
-            if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br>`);
-                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
-                skillTextParts2.push(`Visibilidade:: ${-ocultrarsalvaValue}<br><br>`);
-            } else {
-                skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
-                skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
             }
 
+            skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue + 1))}<br>`);
+            skillTextParts2.push(`••FortDefesa: ${mostrarValorEDdesvio(9)}<br><br>`);
+            skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue - 3) : mostrarValorEDdesvio(1)}<br>`);
+            skillTextParts2.push(`Espaços: (${-ocultrarsalvaValue}) Figurativo: (${2 ** -ocultrarsalvaValue}Kg) <br> `);
+
+
+            skillTextParts2.sort();
         }
 
-        skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue + 1))}<br>`);
-        skillTextParts2.push(`••FortDefesa: ${mostrarValorEDdesvio(9)}<br><br>`);
-        skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue - 3) : mostrarValorEDdesvio(1)}<br>`);
-        skillTextParts2.push(`Espaços: (${-ocultrarsalvaValue}) Figurativo: (${2 ** -ocultrarsalvaValue}Kg) <br> `);
 
-
-
-        skillTextParts2.sort();
         skillText += skillTextParts2.join("");
 
 
+        skillTextParts2 = [];
+
+
+
         skillText += `<hr>`;
-        skillText += `<h1>Inf de Dano</h1>`;
 
 
         skillTextParts2 = [];
 
+        skillTextParts2.push(createTituloComEstado('Inf de Dano', [
+            { label: '', attr: 'attr2', texto: '' }
+        ], titulo));
 
-        skillTextParts2.push(createMultipleActionButtonsComEstado('Impacto', [
-            { label: '', attr: 'attr1', texto: 'Ser possui Força: Impacto' }
-        ], tipodano));
+        if (titulo.attr2 == 1) {
+            skillTextParts2.push(createMultipleActionButtonsComEstado('Impacto', [
+                { label: '', attr: 'attr1', texto: 'Ser possui Força: Impacto' }
+            ], tipodano));
 
-        skillTextParts2.push(createMultipleActionButtonsComEstado('Perfuração', [
-            { label: '', attr: 'attr2', texto: 'Ser possui Força: Perfuração' }
-        ], tipodano));
+            skillTextParts2.push(createMultipleActionButtonsComEstado('Perfuração', [
+                { label: '', attr: 'attr2', texto: 'Ser possui Força: Perfuração' }
+            ], tipodano));
 
-        skillTextParts2.push(createMultipleActionButtonsComEstado('Corrosivo', [
-            { label: '', attr: 'attr3', texto: 'Ser possui Força: Corrosão' }
-        ], tipodano));
+            skillTextParts2.push(createMultipleActionButtonsComEstado('Corrosivo', [
+                { label: '', attr: 'attr3', texto: 'Ser possui Força: Corrosão' }
+            ], tipodano));
 
-        skillTextParts2.push(createMultipleActionButtonsComEstado('Tóxico', [
-            { label: '', attr: 'attr4', texto: 'Ser possui Força: Tóxico' }
-        ], tipodano));
+            skillTextParts2.push(createMultipleActionButtonsComEstado('Tóxico', [
+                { label: '', attr: 'attr4', texto: 'Ser possui Força: Tóxico' }
+            ], tipodano));
 
 
 
-        skillTextParts2.sort();
+            skillTextParts2.sort();
+        }
+
+
         skillText += skillTextParts2.join("");
 
 
@@ -862,122 +933,155 @@ function updateSkills() {
 
 
         skillText += `<hr><b>`;
-        skillText += `<h1>Reações</h1>`;
+
 
         skillTextParts2 = [];
 
-        if (desvioValue + visibilidadeValue > 0) {
-            if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
-                skillTextParts2.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + attributes.attr3)}<br>
+        skillTextParts2.push(createTituloComEstado('Reações', [
+            { label: '', attr: 'attr3', texto: '' }
+        ], titulo));
+
+        if (titulo.attr3 == 1) {
+
+            if (desvioValue + visibilidadeValue > 0) {
+                if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
+                    skillTextParts2.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + attributes.attr3)}<br>
                     `);
+                } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
+                    skillTextParts2.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
+            `);
+                }
+            } else if ((attributes.attr4 >= 0 && attributes.attr1 >= 0)) {
+                skillTextParts2.push(`Desviar: (${(desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(desvioValue - visibilidadeValue)}<br>
+            `);
             } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
                 skillTextParts2.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
             `);
             }
-        } else if ((attributes.attr4 >= 0 && attributes.attr1 >= 0)) {
-            skillTextParts2.push(`Desviar: (${(desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(desvioValue - visibilidadeValue)}<br>
-            `);
-        } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
-            skillTextParts2.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue)}<br>
-            `);
-        }
-        skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
+            skillTextParts2.push(`Desprender: ${attributes.attr3 + 2} (${2 ** (attributes.attr3 + 2)}Kg)<br>`);
 
-        skillTextParts2.sort();
+            skillTextParts2.sort();
+
+
+
+        }
+
+
         skillText += skillTextParts2.join("");
+
+
+
+
         skillText += `<hr><b>`;
-        skillText += `<h2>Ações Simples 🔶</h2>`;
-        skillText += `<h2>Ações 🔷</h2>`;
         skillTextParts2 = [];
 
-        // Função para criar botão e conteúdo oculto
 
-        // Criar os botões
+        skillTextParts2.push(createTituloComEstado('Simbologia', [
+            { label: '', attr: 'attr4', texto: '' }
+        ], titulo));
 
-        if (tipodano.attr1 == 1) {
-            forcaimp = attributes.attr3;
-        } else {
-            forcaimp = 0;
+        skillText += skillTextParts2.join("");
+
+        skillTextParts2 = [];
+
+        if (titulo.attr4 == 1) {
+
+            skillText += `<h2>Ações Simples 🔶</h2>`;
+            skillText += `<h2>Ações 🔷</h2>`;
+
         }
 
+        skillText += skillTextParts2.join("");
+
+        skillText += `<hr><b>`;
+        skillTextParts2 = [];
+
+        function efeitodeforça() {
+
+            // Função para criar botão e conteúdo oculto
+
+            // Criar os botões
+
+            if (tipodano.attr1 == 1) {
+                forcaimp = attributes.attr3;
+            } else {
+                forcaimp = 0;
+            }
 
 
-
-
-
-        function gerarTextoDerrubar(spaces) {
-            return `
+            function gerarTextoDerrubar(spaces) {
+                return `
                 •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
                 `;
-        }
-        if (forcaimp < 2) {
-            skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
-                {
-                    label: '🔶',
-                    details: gerarTextoDerrubar(forcaimp)
-                },
-                {
-                    label: '🔷',
-                    details: gerarTextoDerrubar(forcaimp + 3)
-                },
-                {
-                    label: '🔶🔷',
-                    details: gerarTextoDerrubar(forcaimp + 8)
-                }
-            ]));
-
-        } else {
-            skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
-                {
-                    label: 'L',
-                    details: gerarTextoDerrubar(forcaimp - 2)
-                },
-                {
-                    label: '🔶',
-                    details: gerarTextoDerrubar(forcaimp)
-                },
-                {
-                    label: '🔷',
-                    details: gerarTextoDerrubar(forcaimp + 3)
-                },
-                {
-                    label: '🔶🔷',
-                    details: gerarTextoDerrubar(forcaimp + 6)
-                }
-            ]));
-
-
-        }
-
-
-        function gerarTextoArremesso(spaces) {
-            let texttemp = '0'; // Inicializa com valor padrão
-
-            if (attributes.attr1 >= 1) {
-                texttemp = `${sensiValue + 1}`;
-            } else if (attributes.attr1 < 0) {
-                texttemp = `-${sensiValue + 1}`;
             }
-            return `
+            if (forcaimp < 2) {
+                skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
+                    {
+                        label: '🔶',
+                        details: gerarTextoDerrubar(forcaimp)
+                    },
+                    {
+                        label: '🔷',
+                        details: gerarTextoDerrubar(forcaimp + 3)
+                    },
+                    {
+                        label: '🔶🔷',
+                        details: gerarTextoDerrubar(forcaimp + 8)
+                    }
+                ]));
+
+            } else {
+                skillTextParts2.push(createMultipleActionButtons('Derrubar Trombar', [
+                    {
+                        label: 'L',
+                        details: gerarTextoDerrubar(forcaimp - 2)
+                    },
+                    {
+                        label: '🔶',
+                        details: gerarTextoDerrubar(forcaimp)
+                    },
+                    {
+                        label: '🔷',
+                        details: gerarTextoDerrubar(forcaimp + 3)
+                    },
+                    {
+                        label: '🔶🔷',
+                        details: gerarTextoDerrubar(forcaimp + 6)
+                    }
+                ]));
+
+
+            }
+
+
+            function gerarTextoArremesso(spaces) {
+                let texttemp = '0'; // Inicializa com valor padrão
+
+                if (attributes.attr1 >= 1) {
+                    texttemp = `${sensiValue + 1}`;
+                } else if (attributes.attr1 < 0) {
+                    texttemp = `-${sensiValue + 1}`;
+                }
+                return `
                 •Peso|Espaço Alvo máx:  ${spaces}  (${2 ** spaces}Kg)<br><br>
                 
                 •Altura máx Obj: 3d<br><br>
 
                 •Distancia máx horizontal Obj: 10d<br><br>
             `;
-        }
+            }
 
 
 
 
 
-        adicionarGolpeOuDano(skillTextParts2, tipodano, attributes);
+            adicionarGolpeOuDano(skillTextParts2, tipodano, attributes);
 
 
 
-        skillTextParts2.push(createActionButton('••Informação', `•Dano Efeito de Força: Segue como Dano de Queda numericamente igual a 
+            skillTextParts2.push(createActionButton('••Informação', `•Dano Efeito de Força: Segue como Dano de Queda numericamente igual a 
                 altura MAx (se n houver, distancia horizontal Max) 
-                do deslocamento tanto para obj quanto para alvos afetados.<br>
+                do deslocamento tanto para obj quanto para alvos afetados (execeto puxar nesse paenas para alvos.).<br>
                 <br>
 
                 Dano min Efeito de Força: Considere Dano de queda 1d.<br><br>
@@ -993,125 +1097,140 @@ function updateSkills() {
 
             `));
 
-        if (forcaimp <= 2) {
-            skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+            if (forcaimp <= 2) {
+                skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+                    {
+                        label: '🔶🔷',
+                        details: gerarTextoArremesso(forcaimp)
+                    }
+                ]));
+            } else {
+                skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+                    {
+                        label: '🔶',
+                        details: gerarTextoArremesso(forcaimp - 3)
+                    },
+                    {
+                        label: '🔶🔷',
+                        details: gerarTextoArremesso(forcaimp)
+                    }
+                ]));
+            }
+            skillTextParts2.push(createMultipleActionButtons('Carregar', [
                 {
-                    label: '🔶🔷',
-                    details: gerarTextoArremesso(forcaimp)
+                    label: '🔷',
+                    details: '+3 inventaio <br><br>'
                 }
             ]));
-        } else {
-            skillTextParts2.push(createMultipleActionButtons('Arremessar', [
+
+
+            skillTextParts2.push(createMultipleActionButtons('Puxar', [
                 {
                     label: '🔶',
-                    details: gerarTextoArremesso(forcaimp - 3)
+                    details: gerarTextoPuxar(forcaimp + 2)
                 },
                 {
                     label: '🔶🔷',
-                    details: gerarTextoArremesso(forcaimp)
-                }
-            ]));
-        }
-        skillTextParts2.push(createMultipleActionButtons('Carregar', [
-                {
-                    label: '🔷',
-                    details: '+3 inventaio'
+                    details: gerarTextoPuxar(forcaimp + 5)
                 }
             ]));
 
 
-        skillTextParts2.push(createMultipleActionButtons('Puxar', [
-            {
-                label: '🔶',
-                details: gerarTextoPuxar(forcaimp + 2)
-            },
-            {
-                label: '🔶🔷',
-                details: gerarTextoPuxar(forcaimp + 5)
-            }
-        ]));
-
-
-        function gerarTextoEmpurrar(spaces) {
-            return `
+            function gerarTextoEmpurrar(spaces) {
+                return `
             •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
         
             •Distancia máx horizontal Obj: 1d<br><br>
             `;
-        }
-        
-        skillTextParts2.push(createMultipleActionButtons('Segurar Prender', [
-            {
-                label: '🔶',
-                details: gerarTextoSegurar(forcaimp)
-            },
-            {
-                label: '🔶🔷',
-                details: gerarTextoSegurar(forcaimp + 3)
             }
-        ]));
-        
-        function gerarTextoSegurar(spaces) {
-            return `
-            •Peso|Espaço Alvo máx: ${spaces+2} (${2 ** (spaces+2)}Kg)<br>
+
+            skillTextParts2.push(createMultipleActionButtons('Segurar Prender', [
+                {
+                    label: '🔶',
+                    details: gerarTextoSegurar(forcaimp)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoSegurar(forcaimp + 3)
+                }
+            ]));
+
+            function gerarTextoSegurar(spaces) {
+                return `
+            •Peso|Espaço Alvo máx: ${spaces + 2} (${2 ** (spaces + 2)}Kg)<br>
             •Preso com: ${spaces}<br><br>
-            •Sufocamento permetido se: Alvo Menor que ${spaces} Espaços (${2 ** (spaces)}Kg)<br><br>
+            •Sufocamento permetido se: Alvo Menor igual que ${spaces} Espaços (${2 ** (spaces)}Kg)<br><br>
            
             `;
-        }
+            }
 
-        function gerarTextoPuxar(spaces) {
-            return `
+            function gerarTextoPuxar(spaces) {
+                return `
             •Peso|Espaço Alvo máx: ${spaces} (${2 ** (spaces)}Kg)<br>
-            •Preso com: ${spaces -2}<br><br>
+            •Preso com: ${spaces - 2}<br><br>
             
-            Apenas Puxar horrizontal.
+            •Apenas Puxar horrizontal.
             Se vertical:  ir para Empunhar.<br><br>
 
-            Evento max: 13 dado de Dano Queda ou
+            •Evento max: 13 dado de Dano Queda ou
             1 dado/t. (Apenas alvos)
             <br><br>
             `;
-        }
+            }
 
-        function gerarTextoEmpunhar(spaces) {
-            return `
+            function gerarTextoEmpunhar(spaces) {
+                return `
             •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
         
             •Limite 2 (2 braços)<br><br>
             `;
+            }
+
+
+
+
+            skillTextParts2.push(createMultipleActionButtons('Empurrar', [
+                {
+                    label: '🔶',
+                    details: gerarTextoEmpurrar(forcaimp + 2)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoEmpurrar(forcaimp + 5)
+                }
+            ]));
+
+
+            skillTextParts2.push(createMultipleActionButtons('Empunhar', [
+                {
+                    label: '🔶',
+                    details: gerarTextoEmpunhar(forcaimp)
+                },
+                {
+                    label: '🔶🔷',
+                    details: gerarTextoEmpunhar(forcaimp + 3)
+                }
+            ]));
+
+
+            // Organiza
+            skillTextParts2.sort();
+
+
+        }
+
+        skillTextParts2.push(createTituloComEstado('Efeito de Força', [
+            { label: '', attr: 'attr1', texto: '' }
+        ], titulo));
+
+        if (titulo.attr1 == 1) {
+            efeitodeforça();
         }
 
 
 
-
-        skillTextParts2.push(createMultipleActionButtons('Empurrar', [
-            {
-                label: '🔶',
-                details: gerarTextoEmpurrar(forcaimp + 2)
-            },
-            {
-                label: '🔶🔷',
-                details: gerarTextoEmpurrar(forcaimp + 5)
-            }
-        ]));
-
-
-        skillTextParts2.push(createMultipleActionButtons('Empunhar', [
-            {
-                label: '🔶',
-                details: gerarTextoEmpunhar(forcaimp)
-            },
-            {
-                label: '🔶🔷',
-                details: gerarTextoEmpunhar(forcaimp + 3)
-            }
-        ]));
-
-
-        // Organiza
-        skillTextParts2.sort();
         skillText += skillTextParts2.join("");
+
         skillText += `</b>`;
 
 
