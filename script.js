@@ -23,7 +23,7 @@ let titulo = {
     attr3: 0,//reação
     attr4: 0,//simbologia
     attr5: 0,//inf de itens
-    attr6: 0,
+    attr6: 0,//Dano de Queda
     attr7: 0,
     attr8: 0,
 };
@@ -835,32 +835,13 @@ function updateSkills() {
 
         skillTextParts2.sort();
 
-        skillTextParts2.push(createActionButton('Dano Queda', `Dano de Impacto + Efeito caido<br><br>
-        
-        Espaço + altura = n dados.<br> 
-        n( ${mostrarValorED(2)})<br> 
-        <br>
-
-        Dano max: Espaços +10 <= altura. <br>Em alvos<br><br>
-
-        Lesão aleatoria vinda desse dano.<br><br>
-
-        •Dano a Inventario: (o mesmo de Efeito em area) Para Obj e alvos afetados.<br><br>
-        
-        Defesa e Desvio nesse caso só bloqueará até dois dados no maximo.<br><br>
-        Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
-        `));
-
-        skillText += skillTextParts2.join("");
-
-
 
 
 
     }
 
     if (true) {
-        skillText += `<hr><b>`;
+        skillText += `<b>`;
 
         let skillTextParts2 = [];
 
@@ -908,24 +889,24 @@ function updateSkills() {
                     { label: 'Ocultatibilidade', attr: 'attr2' }
                 ], infitems)
             );
-            skillTextParts2.push( `<hr>`);
-            pontecialValue = (infitems.attr1 < 4 ? (+Math.floor((infitems.attr1)/3)) : infitems.attr1 + 4*(-1+Math.floor((infitems.attr1-1)/3)));
+            skillTextParts2.push(`<hr>`);
+            pontecialValue = (infitems.attr1 < 4 ? (+Math.floor((infitems.attr1) / 3)) : infitems.attr1 + 4 * (-1 + Math.floor((infitems.attr1 - 1) / 3)));
             pontecialValuedef = pontecialValue;
-            
-            pontecialValuepeso=pontecialValue-infitems.attr2>0?pontecialValue-infitems.attr2:0;
+
+            pontecialValuepeso = pontecialValue - infitems.attr2 > 0 ? pontecialValue - infitems.attr2 : 0;
 
 
             skillTextParts2.push(`Potencial: ${infitems.attr1}<br>`);
-            skillTextParts2.push(`Ocultar: ${-pontecialValue+infitems.attr2}<br>`);
-            skillTextParts2.push(`Peso|Espaços: ${(pontecialValuepeso)} (${(2**pontecialValuepeso)})Kg<br>`);
-            skillTextParts2.push(`Visibilidade: ${pontecialValue-infitems.attr2}<br><br>`);
+            skillTextParts2.push(`Ocultar: ${-pontecialValue + infitems.attr2}<br>`);
+            skillTextParts2.push(`Peso|Espaços: ${(pontecialValuepeso)} (${(2 ** pontecialValuepeso)})Kg<br>`);
+            skillTextParts2.push(`Visibilidade: ${pontecialValue - infitems.attr2}<br><br>`);
 
-            skillTextParts2.push(`•Defesa: ${(mostrarValorEDdesvio( pontecialValuedef + 1))}<br>`);
+            skillTextParts2.push(`•Defesa: ${(mostrarValorEDdesvio(pontecialValuedef + 1))}<br>`);
             skillTextParts2.push(`•DefFortitude: ${mostrarValorEDdesvio(9)}<br>`);
-            skillTextParts2.push(`•DefCorrosivo : ${( pontecialValuedef) > 3 ? mostrarValorEDdesvio( pontecialValuedef - 3) : mostrarValorEDdesvio(1)}<br>`);
-           
+            skillTextParts2.push(`•DefCorrosivo : ${(pontecialValuedef) > 3 ? mostrarValorEDdesvio(pontecialValuedef - 3) : mostrarValorEDdesvio(1)}<br>`);
 
-        
+
+
 
 
         }
@@ -967,6 +948,39 @@ function updateSkills() {
 
 
             skillTextParts2.sort();
+        }
+
+
+
+        skillText += skillTextParts2.join("");
+
+        skillTextParts2 = [];
+
+        skillTextParts2.push(createTituloComEstado('Dano de Queda', [
+            { label: '', attr: 'attr6', texto: '' }
+        ], titulo));
+        
+        skillText += `<hr>`;
+
+        if (titulo.attr6 == 1) {
+        
+        skillTextParts2.push('•Dano Queda', `
+        n( ${mostrarValorED(2)})<br> 
+        <br>
+
+        •Dano max: Espaços +10 <= altura. <br>Em alvos<br><br>
+
+        •Lesão aleatoria vinda desse dano.<br><br>
+
+        •Dano a Inventario: (o mesmo de Efeito em area) Para Obj e alvos afetados.<br><br>
+        
+        •Defesa e Desvio nesse caso só bloqueará até dois dados no maximo.<br><br>
+        Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
+        `);
+
+            
+
+
         }
 
 
