@@ -227,7 +227,7 @@ function updateSkills() {
             return ` ${indice2 + 10}d >= Dano dobrado`;
         }
     }
-    
+
 
 
     function mostrarValorEDdesvio(indice5) {
@@ -266,7 +266,7 @@ function updateSkills() {
         }
 
     }
-    
+
     function mostrarValorEDocultar(indice3) {
         if (indice3 >= 0) {
             return `${indice3}d de Vantagem`;
@@ -363,7 +363,7 @@ function updateSkills() {
     alcanceValue = (attributes.attr1 + attributes.attr4) * 3;
     atletismoValue = ((attributes.attr3 * attributes.attr7) >= 1 ? (attributes.attr3) * attributes.attr7 + 3 : attributes.attr3 == 0 ? 0 : attributes.attr3 * 2);
 
-    
+
 
     controleValue = (attributes.attr2 * attributes.attr3 >= 1) ? (attributes.attr2 * attributes.attr3) : (attributes.attr2 >= attributes.attr3 ? attributes.attr2 != 0 ? attributes.attr2 : 1 : attributes.attr3 != 0 ? attributes.attr3 : 1);
     conhecimentoValue = (attributes.attr4 * attributes.attr8 >= 1 ? attributes.attr4 * attributes.attr8 : 1);
@@ -393,7 +393,7 @@ function updateSkills() {
     const calcularVelocidadeConjuracao = ({ attr1, attr2, attr3, attr4, attr5, attr6 }) => (Math.max(attr1, attr2, attr3, attr4) > attr2 * attr6 && Math.max(attr1, attr2, attr3, attr4) > attr1 * attr5) ? (attr1 + attr2 + attr3 + attr4 >= 1 ? `+${Math.max(attr1, attr2, attr3, attr4)}` : "") : (attr2 * attr6 > attr1 * attr5 ? (attr2 * attr6 >= 1 ? `+${attr2 * attr6} (${mostrarValorEDvelocidadedeataque(attr6)})` : "") : (attr1 * attr5 >= 1 ? `+${attr1 * attr5} (${mostrarValorEDvelocidadedeataque(attr5)})` : ""));
     ocultrarsalvaValue = 0;
 
-    
+
 
     //skillText += `<span class="aumenta-letra">Resistência = ${resistValue}</span><br>`;
 
@@ -416,7 +416,7 @@ function updateSkills() {
 
     ocultarValuePeso = (attributes.attr2 >= 0 ? Math.floor(attributes.attr2 / 3) : attributes.attr2);
 
-    defpercepcaoValeu=attributes.attr4*2-1;
+    defpercepcaoValeu = attributes.attr4 * 2 - 1;
 
 
 
@@ -620,20 +620,20 @@ function updateSkills() {
 
     if ((attributes.attr2 >= 1)) {
         if (ocultarValue + ocultarbonusValue > 0) {
-            skillTextParts.push(`Ocultar: (+${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue)/2))} <br>
+            skillTextParts.push(`Ocultar: (+${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue) / 2))} <br>
                 `);
         } else {
 
-            skillTextParts.push(`Ocultar: (${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue)/2))} <br>
+            skillTextParts.push(`Ocultar: (${ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((ocultarValue + ocultarbonusValue) / 2))} <br>
                 `);
         }
         ocultrarsalvaValue = ocultarValue + ocultarbonusValue;
     } else if ((attributes.attr2 < 0)) {
-        skillTextParts.push(`Ocultar:(${-ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-ocultarValue + ocultarbonusValue)/2))} <br>
+        skillTextParts.push(`Ocultar:(${-ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-ocultarValue + ocultarbonusValue) / 2))} <br>
     `);
         ocultrarsalvaValue = -ocultarValue + ocultarbonusValue;
     } else if (-1 + ocultarValue + ocultarbonusValue != 0) {
-        skillTextParts.push(`Ocultar: (${-1 + ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-1+ocultarValue + ocultarbonusValue)/2))} <br>
+        skillTextParts.push(`Ocultar: (${-1 + ocultarValue + ocultarbonusValue}) ${mostrarValorEDocultar(Math.floor((-1 + ocultarValue + ocultarbonusValue) / 2))} <br>
             `);
         ocultrarsalvaValue = -1 + ocultarValue + ocultarbonusValue;
     }
@@ -904,20 +904,6 @@ function updateSkills() {
 
 
 
-        skillTextParts2.push(createActionButton('Toque', `Toque`));
-
-        skillTextParts2.push(createActionButton('Segurar', `
-            ${forcaimp}ED (${2 ** (forcaimp)}Kg)<br>
-            Força Alvo max ${forcaimp + 2}ED (${2 ** (forcaimp + 2)}Kg)
-        `));
-        skillTextParts2.push(createActionButton('Puxar', `
-            Apenas Horizontal<br>
-            ${forcaimp + 2} ED (${2 ** (forcaimp + 2)}Kg)<br>
-            Evento -5 Saude ou impacto<br>
-            Combate -1/t Saude ou impacto<br>
-            - Saúde|imp para alvo apenas
-        `));
-
 
         function gerarTextoDerrubar(spaces) {
             return `
@@ -989,7 +975,7 @@ function updateSkills() {
 
 
 
-        skillTextParts2.push(createActionButton('••Efeito de Força', `•Dano Efeito de Força: Segue como Dano de Queda numericamente igual a 
+        skillTextParts2.push(createActionButton('••Informação', `•Dano Efeito de Força: Segue como Dano de Queda numericamente igual a 
                 altura MAx (se n houver, distancia horizontal Max) 
                 do deslocamento tanto para obj quanto para alvos afetados.<br>
                 <br>
@@ -1000,7 +986,11 @@ function updateSkills() {
                 •Efeito caido sempre irá acontecer caso os Alvos sofram um acerto de: Derrubar Trombar, Empurrar, Puxar e Arremessar (nesse caso o obj arremesado).<br><br>
             
 
+                •Efeitos de Força prolongados por eventos causam no seu usuario -1 de Saude. Se forem maiores que uma ação simples.<br><br>
+
                 •Somar 3d por cada 1 Espaço Max superado. O inverso numerico também pode.<br><br>
+
+
             `));
 
         if (forcaimp <= 2) {
@@ -1022,12 +1012,65 @@ function updateSkills() {
                 }
             ]));
         }
+        skillTextParts2.push(createMultipleActionButtons('Carregar', [
+                {
+                    label: '🔷',
+                    details: '+3 inventaio'
+                }
+            ]));
+
+
+        skillTextParts2.push(createMultipleActionButtons('Puxar', [
+            {
+                label: '🔶',
+                details: gerarTextoPuxar(forcaimp + 2)
+            },
+            {
+                label: '🔶🔷',
+                details: gerarTextoPuxar(forcaimp + 5)
+            }
+        ]));
+
 
         function gerarTextoEmpurrar(spaces) {
             return `
             •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
         
             •Distancia máx horizontal Obj: 1d<br><br>
+            `;
+        }
+        
+        skillTextParts2.push(createMultipleActionButtons('Segurar Prender', [
+            {
+                label: '🔶',
+                details: gerarTextoSegurar(forcaimp)
+            },
+            {
+                label: '🔶🔷',
+                details: gerarTextoSegurar(forcaimp + 3)
+            }
+        ]));
+        
+        function gerarTextoSegurar(spaces) {
+            return `
+            •Peso|Espaço Alvo máx: ${spaces+2} (${2 ** (spaces+2)}Kg)<br>
+            •Preso com: ${spaces}<br><br>
+            •Sufocamento permetido se: Alvo Menor que ${spaces} Espaços (${2 ** (spaces)}Kg)<br><br>
+           
+            `;
+        }
+
+        function gerarTextoPuxar(spaces) {
+            return `
+            •Peso|Espaço Alvo máx: ${spaces} (${2 ** (spaces)}Kg)<br>
+            •Preso com: ${spaces -2}<br><br>
+            
+            Apenas Puxar horrizontal.
+            Se vertical:  ir para Empunhar.<br><br>
+
+            Evento max: 13 dado de Dano Queda ou
+            1 dado/t. (Apenas alvos)
+            <br><br>
             `;
         }
 
@@ -1081,46 +1124,7 @@ function updateSkills() {
     skillText += ` <hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>`;
 
 
-
-
-
-
-
-
-
     const skillsList = document.getElementById('skills-list');
-
-    if (attributes.attr3 != 1 && attributes.attr7 != 1) {
-
-        skillText += `<br><br>
-                            Principais dados: <br><br>
-                            
-                            
-                            Golpe: 
-                            Força comun max: ${forcaValue + 3} (${2 ** (forcaValue + 3)}Kg)<br>
-                            Força comun min: ${forcaValue} (${2 ** (forcaValue)}Kg)<br>
-                            Habilidade uso de força extra: (+${Math.floor((forcaValue + 3) / 2)} ED)<br><br>
-                            Exemplos de ações:  Golpes, Empurrar,<br> Derrubar, Segurar, Prender,<br> Desprender, Empunhar <br>
-                            <hr><br>
-                            <hr><br><br>
-
-                            Dados Secundários: <br><br>
-                            Carregar livre: ${forcaValue} (${2 ** (forcaValue)}Kg)<br>
-                            Carregar ação simples:  ${forcaValue + 2} (${2 ** (forcaValue + 2)}Kg)<br>
-                            <br>
-                            Puxar ação simples:  ${forcaValue + 2} (${2 ** (forcaValue + 2)}Kg)<br>
-                            Puxar ação :  ${forcaValue + 5} (${2 ** (forcaValue + 5)}Kg)<br>
-                           
-                            Arremesar ação simples:  ${forcaValue - 3} (${2 ** (forcaValue - 3)}Kg)<br>
-                            Arremesar ação :  ${forcaValue} (${2 ** (forcaValue)}Kg)<br><br>
-                            
-                            Em Costumes e informação segue
-                            Idade 20 | 1
-                            
-                            
-                            `;
-
-    }
 
     let isValid = true;
 
