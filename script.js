@@ -28,6 +28,17 @@ let titulo = {
     attr8: 0,
 };
 
+let infitems = {
+    attr1: 0,//Potencial
+    attr2: 0,//Ocultabilidade
+    attr3: 0,
+    attr4: 0,
+    attr5: 0,
+    attr6: 0,
+    attr7: 0,
+    attr8: 0,
+};
+
 function createTituloComEstado(actionName, buttons, titulo) {
     const groupId = `group_${actionName.replace(/\s+/g, '_')}_${Math.random().toString(36).substr(2, 5)}`;
 
@@ -165,6 +176,49 @@ function createMultipleActionButtonsComEstado(actionName, buttons, tipodano) {
     </div>
     `;
 }
+
+
+function createMultipleActionButtonsComContador(buttons, infitems) {
+    const groupId = `group_${Math.random().toString(36).substr(2, 5)}`;
+
+    const buttonHtml = buttons.map(({ label, attr }, i) => {
+        const idCounter = `${groupId}_counter_${i}`;
+
+        return `
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 5px;">
+                <span><b>${label}</b></span>
+                <button
+                    onclick="
+                        if (infitems['${attr}'] > 0) infitems['${attr}']--;
+                        document.getElementById('${idCounter}').innerText = infitems['${attr}'];
+                        if (typeof updateSkills === 'function') updateSkills();
+                    "
+                    style="padding: 1px 4px; font-size: 16px; cursor: pointer; border: none; border-radius: 4px; background-color: #007bff; color: white; width: 20px; height: 20px;">
+                    -
+                </button>
+                <span id="${idCounter}" style="width: auto; text-align: center; font-size: 16px; font-weight: bold; margin: 0 10px;">${infitems[attr]}</span>
+                <button
+                    onclick="
+                        infitems['${attr}']++;
+                        document.getElementById('${idCounter}').innerText = infitems['${attr}'];
+                        if (typeof updateSkills === 'function') updateSkills();
+                    "
+                    style="padding: 1px 4px; font-size: 16px; cursor: pointer; border: none; border-radius: 4px; background-color: #007bff; color: white; width: 20px; height: 20px;">
+                    +
+                </button>
+            </div>
+        `;
+    });
+
+    return `
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            ${buttonHtml.join('')}
+        </div>
+    `;
+}
+
+
+
 
 
 
@@ -815,7 +869,7 @@ function updateSkills() {
             skillTextParts2.push(`Peso: ${pesoValue - ocultarValuePeso} Espaços (${2 ** (pesoValue - ocultarValuePeso)}Kg) <br>`);
             skillTextParts2.push(`Alcance Fizico: ${pesoValue - 5 - ocultarValuePeso}d<br> `);
             skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-            skillTextParts2.push(`•Efeito em Area seram aplicados em alvos menores igual que o Peso ${pesoValue - ocultarValuePeso-1} (${2 ** (pesoValue - ocultarValuePeso-1)}Kg) <br> `);
+            skillTextParts2.push(`•Efeito em Area seram aplicados em alvos menores igual que o Peso ${pesoValue - ocultarValuePeso - 1} (${2 ** (pesoValue - ocultarValuePeso - 1)}Kg) <br> `);
 
         } else {
             skillTextParts2.push(`Inventário: ${1} (10max para item>=0)<br>`);
@@ -835,55 +889,45 @@ function updateSkills() {
         skillText += skillTextParts2.join("");
         skillText += `<hr>`;
 
-
         skillTextParts2 = [];
+
+
 
         skillTextParts2.push(createTituloComEstado('Inf de Items', [
             { label: '', attr: 'attr5', texto: '' }
         ], titulo));
 
+        skillText += skillTextParts2.join("");
+        skillTextParts2 = [];
+
         if (titulo.attr5 == 1) {
 
-            if (attributes.attr3 >= 0) {
+            skillTextParts2.push(
+                createMultipleActionButtonsComContador([
+                    { label: 'Potencial', attr: 'attr1' },
+                    { label: 'Ocultatibilidade', attr: 'attr2' }
+                ], infitems)
+            );
+            skillTextParts2.push( `<hr>`);
+            pontecialValue = (infitems.attr1 < 4 ? (+Math.floor((infitems.attr1)/3)) : infitems.attr1 + 4*(-1+Math.floor((infitems.attr1-1)/3)));
+            pontecialValuedef = pontecialValue;
+            
+            pontecialValuepeso=pontecialValue-infitems.attr2>0?pontecialValue-infitems.attr2:0;
 
 
-                if (attributes.attr2 == 0 && ocultarValue == 1 && ocultarbonusValue == 0) {
-                    skillTextParts2.push(`Ocultar: 0<br> `);
-                    skillTextParts2.push(`Visibilidade: 0<br><br> `);
-                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: 0<br>`);
+            skillTextParts2.push(`Potencial: ${infitems.attr1}<br>`);
+            skillTextParts2.push(`Ocultar: ${-pontecialValue+infitems.attr2}<br>`);
+            skillTextParts2.push(`Peso|Espaços: ${(pontecialValuepeso)} (${(2**pontecialValuepeso)})Kg<br>`);
+            skillTextParts2.push(`Visibilidade: ${pontecialValue-infitems.attr2}<br><br>`);
 
-                } else {
-                    if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                        skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                        skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-                        skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
-                    } else {
-                        skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                        skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-                        skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
-                    }
-                }
-            } else {
+            skillTextParts2.push(`•Defesa: ${(mostrarValorEDdesvio( pontecialValuedef + 1))}<br>`);
+            skillTextParts2.push(`•DefFortitude: ${mostrarValorEDdesvio(9)}<br>`);
+            skillTextParts2.push(`•DefCorrosivo : ${( pontecialValuedef) > 3 ? mostrarValorEDdesvio( pontecialValuedef - 3) : mostrarValorEDdesvio(1)}<br>`);
+           
 
-                if (attributes.attr3 > 2 && attributes.attr2 == 0) {
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br>`);
-                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(ocultrarsalvaValue)}<br>`);
-                    skillTextParts2.push(`Visibilidade:: ${-ocultrarsalvaValue}<br><br>`);
-                } else {
-                    skillTextParts2.push(`Ocultar: ${ocultrarsalvaValue}<br> `);
-                    skillTextParts2.push(`Min de ♠ Para Empunhar ou Vestir: ${(-ocultrarsalvaValue)}<br>`);
-                    skillTextParts2.push(`Visibilidade: ${-ocultrarsalvaValue}<br><br> `);
-                }
-
-            }
-
-            skillTextParts2.push(`••Defesa: ${(mostrarValorEDdesvio(-ocultrarsalvaValue + 1))}<br>`);
-            skillTextParts2.push(`••FortDefesa: ${mostrarValorEDdesvio(9)}<br><br>`);
-            skillTextParts2.push(`••DefCorrosivo : ${(-ocultrarsalvaValue) > 3 ? mostrarValorEDdesvio(-ocultrarsalvaValue - 3) : mostrarValorEDdesvio(1)}<br>`);
-            skillTextParts2.push(`Espaços: (${-ocultrarsalvaValue}) Figurativo: (${2 ** -ocultrarsalvaValue}Kg) <br> `);
+        
 
 
-            skillTextParts2.sort();
         }
 
 
@@ -1211,6 +1255,8 @@ function updateSkills() {
                     details: gerarTextoEmpunhar(forcaimp + 3)
                 }
             ]));
+
+
 
 
             // Organiza
