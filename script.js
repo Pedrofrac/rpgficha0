@@ -18,11 +18,11 @@ let tipodano = {
 };
 
 let titulo = {
-    attr1: 0,
-    attr2: 0,
-    attr3: 0,
-    attr4: 0,
-    attr5: 0,
+    attr1: 0,//Efeito de força
+    attr2: 0,//tipo de dano
+    attr3: 0,//reação
+    attr4: 0,//simbologia
+    attr5: 0,//inf de itens
     attr6: 0,
     attr7: 0,
     attr8: 0,
