@@ -1229,10 +1229,8 @@ function updateSkills() {
             
             •Apenas Puxar horrizontal.
             Se vertical:  ir para Empunhar.<br><br>
-
-            •Evento max: 13 dado de Dano Queda ou
-            1 dado/t. (Apenas alvos)
-            <br><br>
+            
+            •Dano turno|Evento: (1|13) Dano queda<br><br>
             `;
             }
 
@@ -1241,6 +1239,8 @@ function updateSkills() {
             •Peso|Espaço Alvo máx: ${spaces} (${2 ** spaces}Kg)<br><br>
         
             •Limite 2 (2 braços)<br><br>
+
+            • (Apenas para seres) Dano turno|Evento: (2|13) Dano queda<br><br>
             `;
             }
 
