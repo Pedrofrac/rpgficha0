@@ -296,6 +296,7 @@ function updateSkills() {
     }
 
     function mostrarValorEDFor(indice) {
+        indice++;
         valorereal = Math.floor((indice - 1) / 10);
 
         dado = (valorereal * 10 - indice + 1) + 10;
@@ -308,6 +309,7 @@ function updateSkills() {
         }
     }
     function mostrarValorED(indice) {
+        indice++;
         valorereal = Math.floor((indice - 1) / 10);
 
         dado = (valorereal * 10 - indice + 1) + 10;
