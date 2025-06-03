@@ -390,19 +390,24 @@ function updateSkills() {
         let texto = "";
 
         if (tipodano.attr1 === 1) {
+            if (spaces == attributes.attr3) {
+                texto += `🔷`;
+            } else {
+                texto += `🔶`;
+            }
             texto += `Impacto: (${spaces + 3}) ${mostrarValorED(spaces + 3)}<br>`;
         } else {
             if (attributes.attr3 <= 2) {
                 if (spaces >= 0) {
-                    texto += `Impacto: (${3}) ${mostrarValorED(3)}<br>`;
+                    texto += `🔷Impacto: (${3}) ${mostrarValorED(3)}<br>`;
                 } else {
-                    texto += `Impacto: (${1}) ${mostrarValorED(1)}<br>`;
+                    texto += `🔶Impacto: (${1}) ${mostrarValorED(1)}<br>`;
                 }
             } else {
                 if (spaces >= 3) {
-                    texto += `Impacto: (${3}) ${mostrarValorED(3)}<br>`;
+                    texto += `🔷Impacto: (${3}) ${mostrarValorED(3)}<br>`;
                 } else {
-                    texto += `Impacto: (${1}) ${mostrarValorED(1)}<br>`;
+                    texto += `🔶Impacto: (${1}) ${mostrarValorED(1)}<br>`;
                 }
 
             }
@@ -410,6 +415,11 @@ function updateSkills() {
         }
 
         if (tipodano.attr4 === 1) {
+            if (spaces == attributes.attr3) {
+                texto += `🔷`;
+            } else {
+                texto += `🔶`;
+            }
             if (spaces >= 0) {
                 texto += `Tóxico: (${(spaces * 3) + 3}) ${mostrarValorED((spaces * 3) + 3)}<br>`;
             } else {
@@ -419,13 +429,24 @@ function updateSkills() {
         }
 
         if (tipodano.attr2 === 1) {
+            if (spaces == attributes.attr3) {
+                texto += `🔷`;
+            } else {
+                texto += `🔶`;
+            }
             if (spaces >= 0) {
-                texto += `Perfurante: (${(spaces * 4) + 3}) ${mostrarValorED((spaces * 4) + 3)}<br>`;
+                texto += `Perfurante: (${(spaces ) + 3}) ${mostrarValorED((spaces) + 3)}<br>`;
             } else {
                 texto += `Perfurante: (${1}) ${mostrarValorED(1)}<br>`;
             }
+            texto += `Sangramento/t: MAX 5 POR EVENTO <br>`;
         }
         if (tipodano.attr3 === 1) {
+            if (spaces == attributes.attr3) {
+                texto += `🔷`;
+            } else {
+                texto += `🔶`;
+            }
             if (spaces >= 0) {
                 texto += `Corrosivo: (${(spaces * 2) + 3}) ${mostrarValorED((spaces * 2) + 3)}<br>`;
             } else {
@@ -572,9 +593,9 @@ function updateSkills() {
 
     }
     spaces2 = attributes.attr3 <= 0 ? attributes.attr3 - 2 : attributes.attr3 - 3;
-    skillTextParts.push(`🔷${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}<br>  
+    skillTextParts.push(`${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}<br>  
     `);
-    skillTextParts.push(`🔶${gerarTextoGolpeFiltrado(tipodano, spaces2)}
+    skillTextParts.push(`${gerarTextoGolpeFiltrado(tipodano, spaces2)}
     `);
 
 
@@ -752,7 +773,7 @@ function updateSkills() {
     if (tipodano.attr1 == 1) {
         if ((attributes.attr3 >= 0)) {
 
-            skillTextParts.push(`Empunhadura: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg)<br>
+            skillTextParts.push(`🔶🔷Empunhadura: ${(forcaValue + 3)} (${2 ** (forcaValue + 3)}Kg)<br>
     `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
     
     `); skillTextParts.push(`🔶Empunhadura: ${(forcaValue)} (${2 ** (forcaValue)}Kg)<br>
@@ -760,12 +781,12 @@ function updateSkills() {
 
         } if ((attributes.attr3 < 0)) {
 
-            skillTextParts.push(`Empunhadura: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg)<br>
+            skillTextParts.push(`🔶🔷Empunhadura: ${(-forcaValue + 3)} (${2 ** (-forcaValue + 3)}Kg)<br>
     `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(attributes.attr3 + 3)}<br>
     `);
         }
     } else {
-        skillTextParts.push(`Empunhadura: ${(+ 3)} (${2 ** (+ 3)}Kg)<br>
+        skillTextParts.push(`🔶🔷Empunhadura: ${(+ 3)} (${2 ** (+ 3)}Kg)<br>
     `); skillTextParts.push(`Efeito de Força: ${mostrarValorEDFor(+ 3)}<br>
     `); skillTextParts.push(`🔶Empunhadura: ${(forcaValue)} (${2 ** (forcaValue)}Kg)<br>
     `);
@@ -961,12 +982,12 @@ function updateSkills() {
         skillTextParts2.push(createTituloComEstado('Dano de Queda', [
             { label: '', attr: 'attr6', texto: '' }
         ], titulo));
-        
+
         skillText += `<hr>`;
 
         if (titulo.attr6 == 1) {
-        
-        skillTextParts2.push('•Dano Queda', `
+
+            skillTextParts2.push('•Dano Queda', `
         n( ${mostrarValorED(2)})<br> 
         <br>
 
@@ -980,7 +1001,7 @@ function updateSkills() {
         Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
         `);
 
-            
+
 
 
         }
