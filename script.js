@@ -448,10 +448,11 @@ function updateSkills() {
                 texto += `🔶`;
             }
             if (spaces >= 0) {
-                texto += `Corrosivo: (${(spaces * 2) + 3}) ${mostrarValorED((spaces * 2) + 3)}<br>`;
+                texto += `Corrosivo: (${(spaces) + 3}) ${mostrarValorED((spaces) + 3)}<br>`;
             } else {
                 texto += `Corrosivo: (${1}) ${mostrarValorED(1)}<br>`;
             }
+            texto += `Lesão sempre inclusa e permanente <br>`;
         }
 
         return texto || "Nenhum tipo de dano selecionado.";
