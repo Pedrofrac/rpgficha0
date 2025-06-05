@@ -379,9 +379,9 @@ function updateSkills() {
 
     function mostrarValorEDocultar(indice3) {
         if (indice3 >= 0) {
-            return `${indice3}d de Vantagem`;
+            return `${indice3}d de Vantagem`; // numero aqui representa quanto pode descer o valor do dado
         } else {
-            return `${-indice3}d de Desvantagem`;
+            return `${-indice3}d de Desvantagem`; // valor do dado sempre sobe
         }
 
     }
@@ -574,9 +574,9 @@ function updateSkills() {
 
 
 
-        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue)}<br> 
+        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue+1)}<br> 
         `);
-        skillTextParts.push(`Fortitude: (+${fortitudeValue}) ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue)}  <br>    
+        skillTextParts.push(`Fortitude: (+${fortitudeValue}) ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue+1)}  <br>    
         `);
 
 
