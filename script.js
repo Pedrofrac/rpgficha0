@@ -296,45 +296,49 @@ function updateSkills() {
     }
 
     function mostrarValorEDFor(indice) {
-        indice++;
-        valorereal = Math.floor((indice - 1) / 10);
+        valorereal = Math.floor((indice) / 10);
 
-        dado = (valorereal * 10 - indice + 1) + 10;
+        dado = (-valorereal * 10) + indice;
 
         if (indice >= 1) {
-            return `Min ${dado}d`;
+            if (indice >= 10) {
+                return `=|🡇 9d`;
+            } else {
+                return `=|🡇 ${dado}d`;
+            }
+
         } else {
 
-            return `Min 10d`;
+            return `=|🡇 0d`;
         }
     }
     function mostrarValorED(indice) {
-        indice++;
-        valorereal = Math.floor((indice - 1) / 10);
 
-        dado = (valorereal * 10 - indice + 1) + 10;
+        valorereal = Math.floor((indice) / 10);
+
+        dado = (-valorereal * 10) + indice;
 
         if (indice >= 1) {
-            return `Dano:  ${valorereal} | Min ${dado}d`;
+            return `Dano:  ${valorereal} e =|🡇 ${dado}d`;
         } else {
 
-            return `Dano:  0 | Min 10d`;
+            return `Dano:  0 e =|🡇 0d`;
         }
     }
 
     function mostrarValorEDDefesa(indice2) {
         if (attributes.attr3 > 0) {
-            return ` ${-indice2 + 10}d >= Bloqueia o dano `;
+            return ` ${indice2 - 1}d =|🡇 Bloqueia o dano `;
         } else {
-            return ` ${-indice2 + 10}d >= Dano dobrado`;
+            return ` ${indice2 - 1}d =|🡇 Recebe + 1 Dano`;
         }
     }
 
     function mostrarValorEDperc(indice2) {
         if (indice2 > 0) {
-            return ` ${-indice2 + 10}d >= Bloqueia o dano `;
+            return ` ${indice2}d =|🡇 Bloqueia o dano `;
         } else {
-            return ` ${indice2 + 10}d >= Dano dobrado`;
+            return ` ${-indice2 - 2}d =|🡇 Recebe + 1 Dano`;
         }
     }
 
@@ -342,26 +346,26 @@ function updateSkills() {
 
     function mostrarValorEDdesvio(indice5) {
         if (indice5 > 0 && indice5 < 10) {
-            return `${-indice5 + 10}d >= Bloqueia o dano `;
+            return `${indice5 - 1}d =|🡇 Bloqueia o dano `;
         } else if (indice5 >= 10) {
-            return `0d >= Bloqueia o dano `;
+            return `0d =|🡇 Bloqueia o dano `;
         } else {
-            return `9d >= Bloqueia o dano `;
+            return `9d =|🡇 Bloqueia o dano `;
         }
 
     }
 
     function mostrarValorEDresiliencia(indice4) {
         if (attributes.attr1 >= 0 && attributes.attr2 >= 0) {
-            return ` ${-indice4 + 10}d >= Bloqueia o dano `;
+            return ` ${indice4}d =|🡇 Bloqueia o dano `;
         } else if (attributes.attr1 <= 0 || attributes.attr2 <= 0) {
             if (attributes.attr1 < 0) {
-                return ` ${attributes.attr1 + 10}d >= Dano dobrado `;
+                return ` ${-attributes.attr1 + 1}d =|🡇 Recebe + 1 Dano `;
             } else {
-                return ` ${attributes.attr2 + 10}d >= Dano dobrado `;
+                return ` ${-attributes.attr2 + 1}d =|🡇 Recebe + 1 Dano `;
             }
         } else {
-            return ` ${-indice4 + 10}d >= Dano dobrado `;
+            return ` ${indice4 - 1}d =|🡇 Recebe + 1 Dano `;
         }
 
     }
@@ -435,7 +439,7 @@ function updateSkills() {
                 texto += `🔶`;
             }
             if (spaces >= 0) {
-                texto += `Perfurante: (${(spaces ) + 3}) ${mostrarValorED((spaces) + 3)}<br>`;
+                texto += `Perfurante: (${(spaces) + 3}) ${mostrarValorED((spaces) + 3)}<br>`;
             } else {
                 texto += `Perfurante: (${1}) ${mostrarValorED(1)}<br>`;
             }
@@ -574,9 +578,9 @@ function updateSkills() {
 
 
 
-        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue+1)}<br> 
+        skillTextParts.push(`Defesa: ${mostrarValorEDDefesa(defenseValue + desbiopassivoValue + 1)}<br> 
         `);
-        skillTextParts.push(`Fortitude: (+${fortitudeValue}) ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue+1)}  <br>    
+        skillTextParts.push(`Fortitude: (+${fortitudeValue}) ${mostrarValorEDDefesa(defensedefortitudeValue + desbiopassivoValue + 1)}  <br>    
         `);
 
 
@@ -644,17 +648,17 @@ function updateSkills() {
     }
     if (desvioValue + visibilidadeValue > 0) {
         if (((attributes.attr1 >= 1 || attributes.attr4 >= 1) && (attributes.attr4 >= 0 && attributes.attr1 >= 0))) {
-            skillTextParts.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue+1 )}<br>
+            skillTextParts.push(`Desviar: (${attributes.attr4 * attributes.attr1}) ${mostrarValorEDdesvio(+desvioValue - visibilidadeValue + 1)}<br>
                 `);
         } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
-            skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue+1  )}<br>
+            skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue + 1)}<br>
         `);
         }
     } else if ((attributes.attr4 >= 0 && attributes.attr1 >= 0)) {
-        skillTextParts.push(`Desviar: (${(desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(desvioValue - visibilidadeValue+2)}<br>
+        skillTextParts.push(`Desviar: (${(desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(desvioValue - visibilidadeValue + 2)}<br>
         `);
     } else if ((attributes.attr4 >= 0 || attributes.attr1 >= 0)) {
-        skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue+2)}<br>
+        skillTextParts.push(`Desviar: (${(-desvioValue - visibilidadeValue)}) ${mostrarValorEDdesvio(-desvioValue - visibilidadeValue + 2)}<br>
         `);
     }
 
