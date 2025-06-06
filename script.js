@@ -24,7 +24,7 @@ let titulo = {
     attr4: 0,//simbologia
     attr5: 0,//inf de itens
     attr6: 0,//Dano de Queda
-    attr7: 0,
+    attr7: 0,//Lesão
     attr8: 0,
 };
 
@@ -289,7 +289,7 @@ function updateSkills() {
             attributes[key] = Math.abs(attributes[key]); // transforma em positivo
         }
     }
-    mostrarValorED_Cust_ou_Infor_mes
+
 
     function mostrarValorED_Cust_ou_Infor_mes(indice10) {
         return Math.round((indice10 / 5) * 100) / 100;
@@ -598,7 +598,7 @@ function updateSkills() {
 
     }
     spaces2 = attributes.attr3 <= 0 ? attributes.attr3 - 2 : attributes.attr3 - 3;
-    skillTextParts.push(`${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}<br>  
+    skillTextParts.push(`${gerarTextoGolpeFiltrado(tipodano, attributes.attr3)}  
     `);
     skillTextParts.push(`${gerarTextoGolpeFiltrado(tipodano, spaces2)}
     `);
@@ -734,6 +734,8 @@ function updateSkills() {
         skillTextParts.push(`••Informações: ${Math.round(mostrarValorED_Cust_ou_Infor_mes(conhecimentoValue) * (attributes.attr8 > 0 ? attributes.attr8 : 1) * 100) / 100} | ${mostrarValorED_Cust_ou_Infor_mes(conhecimentoValue) * 130 * (attributes.attr8 > 0 ? attributes.attr8 : 1)} Limite: ${(attributes.attr8 > 0 ? attributes.attr8 : 1)} <br>
     `);
     }
+
+    skillTextParts.push(`🟪Lesão: +${mostrarValorEDocultar(attributes.attr1 - 6)} <br>`);
 
 
     if ((attributes.attr2 >= 1 && attributes.attr4 >= 1)) {
@@ -993,7 +995,7 @@ function updateSkills() {
         if (titulo.attr6 == 1) {
 
             skillTextParts2.push('•Dano Queda', `
-        n( ${mostrarValorED(2)})<br> 
+        n( ${mostrarValorED(0)})<br> 
         <br>
 
         •Dano max: Espaços +10 <= altura. <br>Em alvos<br><br>
@@ -1003,7 +1005,7 @@ function updateSkills() {
         •Dano a Inventario: (o mesmo de Efeito em area) Para Obj e alvos afetados.<br><br>
         
         •Defesa e Desvio nesse caso só bloqueará até dois dados no maximo.<br><br>
-        Acima de 10 em dados, os dados param de aumentar e o dano aumenta para min 8 7 ...
+        Acima de 10 em dados, os dados param de aumentar e o dano aumenta para (=|▼ 1d) (=|▼ 2d) (=|▼ 3d) ... Em todos os dados
         `);
 
 
@@ -1058,7 +1060,7 @@ function updateSkills() {
 
 
 
-        skillText += `<hr><b>`;
+        skillText += `<hr></b><b>`;
         skillTextParts2 = [];
 
 
@@ -1074,12 +1076,14 @@ function updateSkills() {
 
             skillText += `<h2>Ações Simples 🔶</h2>`;
             skillText += `<h2>Ações 🔷</h2>`;
+            skillText += `<h2>Ações de Bonus 🟪</h2>`;
+
 
         }
 
         skillText += skillTextParts2.join("");
 
-        skillText += `<hr><b>`;
+        skillText += `<hr></b><b>`;
         skillTextParts2 = [];
 
         function efeitodeforça() {
@@ -1315,11 +1319,105 @@ function updateSkills() {
             efeitodeforça();
         }
 
+        skillText += skillTextParts2.join("");
+
+
+
+        skillTextParts2 = [];
+
+        skillText += `<hr><hr><hr><hr><hr><hr><hr><hr><hr><hr><hr></b>`;
+
+        //skillText += `<b>`;
+
+
+        skillTextParts2.push(createTituloComEstado('🟪Lesão', [
+            { label: '', attr: 'attr7', texto: '' }
+        ], titulo));
+
+        if (titulo.attr7 == 1) {
+
+            skillTextParts2.push(createActionButton('<b>Informações</b>',
+
+                `
+                Faça um acerto imaginário contra a fortitude do alvo com o valor do acerto.<br><br>
+
+                Sempre analizar essa desvantagem. Ela so afeta o acerto da lesão e não o do toque <br><br>
+
+                A lesão sempre irá durar por todo o Evento.<br><br>
+
+                `
+                ,
+            ));
+
+            skillTextParts2.push(createActionButton(`Lesão +${mostrarValorEDocultar(attributes.attr1 - 6)}`,
+
+                `
+                Cegueira: Alvo fica temporariamente com visão reduzida. Perder um de Ouros.<br><br>
+
+                Surdo: Alvo fica temporariamente com audição baixa. Perder um de Copas.<br><br>
+
+                Hiper-estimulação: Alvo diminui a capacidade de usar Sentidos corporais. Perde um de Paus.<br><br>
+
+                Fraco: Alvo diminui a capacidade de usar força. Perde um de Espadas.<br><br>
+                <br><br>
+
+                `
+                ,
+            ));
+
+            skillTextParts2.push(createActionButton(`Lesão +${mostrarValorEDocultar(attributes.attr1 - 9)}`,
+
+                `
+                Repetir duas: Escolha duas, pode repetir para dar duas Lesões. Dessas lesões: Cegueira, Surdo, Hiper-estimulação, Fraco. 
+                Nesse caso os turnos são o da tabela inicial.<br><br>
+
+                Deslocar articulação das Pernas: O alvo recebe menos uma ação.<br><br>
+
+                Deslocar articulação dos Braços: Escolha um dos itens do alvo Empunhado para ir para o inventário do alvo. 
+                E o alvo não consegue tirá lo até o tempo da Lesão. O item ficam “marcados”. Porém ele pode pegar outros itens. 
+                E junto com isso o Alvo perde direito de uma Empunhadura.<br><br>
+
+
+                `
+                ,
+            ));
+
+            skillTextParts2.push(createActionButton(`Lesão +${mostrarValorEDocultar(attributes.attr1 - 12)}`,
+
+                `
+                Nocaute: O alvo fica inconsciente. Por todo o evento.
+
+                `
+                ,
+            ));
+
+            skillTextParts2.push(createActionButton(`Lesão +${mostrarValorEDocultar(attributes.attr1 - 15)}`,
+
+                `
+                Morte: Alvo zera a vida temporariamente e fica inconsciente. 
+                Assim fica nesse estado por 4t. Após o tempo de lesão, o alvo ganha vida 
+                negativa igual à que precisou para a zerar.
+
+
+                `
+                ,
+            ));
+
+
+
+
+
+
+        }
+
+
+
 
 
         skillText += skillTextParts2.join("");
 
-        skillText += `</b>`;
+
+        //skillText += `</b>`;
 
 
 
