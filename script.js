@@ -302,14 +302,14 @@ function updateSkills() {
 
         if (indice >= 1) {
             if (indice >= 10) {
-                return `=|🡇 9d`;
+                return `=|▼ 9d`;
             } else {
-                return `=|🡇 ${dado}d`;
+                return `=|▼ ${dado}d`;
             }
 
         } else {
 
-            return `=|🡇 0d`;
+            return `=|▼ 0d`;
         }
     }
     function mostrarValorED(indice) {
@@ -319,26 +319,26 @@ function updateSkills() {
         dado = (-valorereal * 10) + indice;
 
         if (indice >= 1) {
-            return `Dano:  ${valorereal} e =|🡇 ${dado}d`;
+            return `Dano:  ${valorereal} e =|▼ ${dado}d`;
         } else {
 
-            return `Dano:  0 e =|🡇 0d`;
+            return `Dano:  0 e =|▼ 0d`;
         }
     }
 
     function mostrarValorEDDefesa(indice2) {
         if (attributes.attr3 > 0) {
-            return ` ${indice2 - 1}d =|🡇 Bloqueia o dano `;
+            return ` ${indice2 - 1}d =|▼ Bloqueia o dano `;
         } else {
-            return ` ${indice2 - 1}d =|🡇 Recebe + 1 Dano`;
+            return ` ${indice2 - 1}d =|▼ Recebe + 1 Dano`;
         }
     }
 
     function mostrarValorEDperc(indice2) {
         if (indice2 > 0) {
-            return ` ${indice2}d =|🡇 Bloqueia o dano `;
+            return ` ${indice2}d =|▼ Bloqueia o dano `;
         } else {
-            return ` ${-indice2 - 2}d =|🡇 Recebe + 1 Dano`;
+            return ` ${-indice2 - 2}d =|▼ Recebe + 1 Dano`;
         }
     }
 
@@ -346,26 +346,26 @@ function updateSkills() {
 
     function mostrarValorEDdesvio(indice5) {
         if (indice5 > 0 && indice5 < 10) {
-            return `${indice5 - 1}d =|🡇 Bloqueia o dano `;
+            return `${indice5 - 1}d =|▼ Bloqueia o dano `;
         } else if (indice5 >= 10) {
-            return `0d =|🡇 Bloqueia o dano `;
+            return `0d =|▼ Bloqueia o dano `;
         } else {
-            return `9d =|🡇 Bloqueia o dano `;
+            return `9d =|▼ Bloqueia o dano `;
         }
 
     }
 
     function mostrarValorEDresiliencia(indice4) {
         if (attributes.attr1 >= 0 && attributes.attr2 >= 0) {
-            return ` ${indice4}d =|🡇 Bloqueia o dano `;
+            return ` ${indice4}d =|▼ Bloqueia o dano `;
         } else if (attributes.attr1 <= 0 || attributes.attr2 <= 0) {
             if (attributes.attr1 < 0) {
-                return ` ${-attributes.attr1 + 1}d =|🡇 Recebe + 1 Dano `;
+                return ` ${-attributes.attr1 + 1}d =|▼ Recebe + 1 Dano `;
             } else {
-                return ` ${-attributes.attr2 + 1}d =|🡇 Recebe + 1 Dano `;
+                return ` ${-attributes.attr2 + 1}d =|▼ Recebe + 1 Dano `;
             }
         } else {
-            return ` ${indice4 - 1}d =|🡇 Recebe + 1 Dano `;
+            return ` ${indice4 - 1}d =|▼ Recebe + 1 Dano `;
         }
 
     }
